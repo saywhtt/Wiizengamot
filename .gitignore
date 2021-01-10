@@ -1,0 +1,12 @@
+# Java class files
+*.class
+# Gradle files
+.gradle/
+build/
+# OS-specific files
+.DS_Store
+# IntelliJ
+*.iml
+.idea/
+# Android Studio captures folder
+captures/

@@ -10,3 +10,5 @@ build/
 .idea/
 # Android Studio captures folder
 captures/
+# Local configuration file (sdk path, etc)
+local.properties

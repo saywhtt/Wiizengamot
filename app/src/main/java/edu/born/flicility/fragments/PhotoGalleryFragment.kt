@@ -1,6 +1,7 @@
 package edu.born.flicility.fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -18,6 +19,7 @@ import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoGalleryPresenter
 import edu.born.flicility.service.PollService
+import edu.born.flicility.service.enqueueWork
 import edu.born.flicility.views.PhotoGalleryView
 import javax.inject.Inject
 
@@ -37,10 +39,16 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.applicationContext as App).plusPhotoComponent().inject(this)
+        (activity?.applicationContext as App).plusPhotoComponent()
+                .inject(this)
         retainInstance = true
         setHasOptionsMenu(true)
         subscribeToPresenter()
+
+        context?.let {
+            val work = Intent(it, PollService::class.java)
+            enqueueWork(it, work)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -56,9 +64,7 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
 
         photoGalleryPresenter.getPhotos()
 
-        context?.let { PollService.newIntent(it) }
-
-        
+       // context?.let { PollService.newIntent(it) }
 
         if (!photoDownloader.isAlive) photoDownloader.start()
 

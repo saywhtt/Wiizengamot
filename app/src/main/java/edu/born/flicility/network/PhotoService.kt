@@ -11,13 +11,13 @@ import retrofit2.http.Query
 interface PhotoService {
 
     @GET("photos")
-    fun getPhotos(@Query("page") page: String,
+    fun getPhotos(@Query("page") page: Int,
                   @Query("per_page") per_page: Int = PER_PAGE,
                   @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Call<List<Photo>>
 
     @GET("search/photos")
     fun getPhotosByQuery(@Query("query") query: String,
-                         @Query("page") page: String,
+                         @Query("page") page: Int,
                          @Query("per_page") per_page: Int = PER_PAGE,
                          @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Call<PhotoSearchResponse>
 }

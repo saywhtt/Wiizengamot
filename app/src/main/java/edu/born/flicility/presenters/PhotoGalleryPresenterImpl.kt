@@ -52,7 +52,7 @@ class PhotoGalleryPresenterImpl(private val service: PhotoService) : BasePresent
         if (currentQuery.isNoMoreResults) return
         query?.let {
             view?.startDownloading()
-            service.getPhotosByQuery(page = "${++currentQuery.currentPage}", query = query)
+            service.getPhotosByQuery(page = ++currentQuery.currentPage, query = query)
                     .enqueue(object : Callback<PhotoSearchResponse> {
 
                         override fun onResponse(call: Call<PhotoSearchResponse>, response: Response<PhotoSearchResponse>) {
@@ -80,14 +80,13 @@ class PhotoGalleryPresenterImpl(private val service: PhotoService) : BasePresent
             }
         }
         view?.startDownloading()
-        service.getPhotos(page = "${++all.currentPage}")
+        service.getPhotos(page = ++all.currentPage)
                 .enqueue(object : Callback<List<Photo>> {
 
                     override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                         response.body()?.let {
                             if (it.isEmpty()) currentQuery.isNoMoreResults = true
                             else view?.updateData(it)
-                            Log.d(PhotoGalleryFragment.TAG, "onResponse ${it.size}")
                             view?.endDownloading()
                         }
                     }

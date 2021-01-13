@@ -2,4 +2,7 @@
     <string name="app_name">Wizengamot</string>
     <string name="search">Search</string>
     <string name="clear">Clear search</string>
+    <string name="polling">Polling</string>
+    <string name="new_photo_notification_title">New photos are available now</string>
+    <string name="new_photo_notification_text">Click to see</string>
 </resources>

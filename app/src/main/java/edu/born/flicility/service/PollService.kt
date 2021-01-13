@@ -36,7 +36,7 @@ fun setServiceStart(context: Context, isOn: Boolean) {
         val work = PeriodicWorkRequestBuilder<PollService>(15, TimeUnit.MINUTES).build()
         workManager.enqueueUniquePeriodicWork(UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, work)
     } else {
-        workManager.cancelAllWorkByTag(UNIQUE_WORK_NAME)
+        workManager.cancelUniqueWork(UNIQUE_WORK_NAME)
     }
 }
 

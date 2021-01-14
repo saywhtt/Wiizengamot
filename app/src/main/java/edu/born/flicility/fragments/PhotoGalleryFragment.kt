@@ -123,7 +123,7 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
     // NOTE: view implementation
     override fun hideKeyboard() {
         activity?.let {
-            val imm = it.applicationContext?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             val view = it.currentFocus ?: View(it)
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }

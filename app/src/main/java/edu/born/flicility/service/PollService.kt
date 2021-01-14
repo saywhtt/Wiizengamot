@@ -72,11 +72,8 @@ class PollService(context: Context, workerParams: WorkerParameters) : Worker(con
                                 else {
                                     val resultId = it[0].id
                                     if (resultId != lastResultId) {
-                                        Log.d(TAG, "Available new results!")
                                         runNewPhotoNotification()
                                         setLastResultId(applicationContext, resultId)
-                                    } else {
-                                        Log.d(TAG, "Not Available new results.")
                                     }
                                 }
                             }

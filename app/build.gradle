@@ -44,6 +44,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
 
+    def materialComponentsVersion = '1.2.1'
+    implementation "com.google.android.material:material:$materialComponentsVersion"
+
     def rxJavaVersion = '3.0.0'
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava3:rxandroid:$rxJavaVersion"

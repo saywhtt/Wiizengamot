@@ -8,9 +8,12 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.SearchView
+import android.widget.Switch
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.adapters.PhotoAdapter
@@ -90,10 +93,14 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
             override fun onQueryTextChange(newText: String): Boolean = false
         })
 
-        val toggleItem = menu.findItem(R.id.menu_item_toggle_polling)
         context?.let {
-            if (isServiceStarted(it)) toggleItem.setTitle(R.string.stop_polling)
-            else toggleItem.setTitle(R.string.start_polling)
+            val toggleItem = menu.findItem(R.id.menu_item_toggle_polling).actionView as SwitchMaterial
+            toggleItem.isChecked = isServiceStarted(it)
+            toggleItem.setOnCheckedChangeListener { buttonView, isOn ->
+                setServiceStart(it, isOn)
+                val toastDescription = if (isOn) R.string.notifications_is_on else R.string.notifications_is_off
+                Toast.makeText(it, toastDescription, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -102,14 +109,6 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
             R.id.menu_item_clear -> {
                 adapter.deleteAll()
                 photoGalleryPresenter.getPhotos()
-                true
-            }
-            R.id.menu_item_toggle_polling -> {
-                context?.let {
-                    val shouldStartService = !isServiceStarted(it)
-                    setServiceStart(it, shouldStartService)
-                }
-                activity?.invalidateOptionsMenu()
                 true
             }
             else -> super.onOptionsItemSelected(item)

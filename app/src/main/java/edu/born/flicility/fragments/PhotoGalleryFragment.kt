@@ -1,7 +1,9 @@
 package edu.born.flicility.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
@@ -16,6 +18,7 @@ import edu.born.flicility.app.App
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoGalleryPresenter
+import edu.born.flicility.service.isServiceStarted
 import edu.born.flicility.service.setServiceStart
 import edu.born.flicility.views.PhotoGalleryView
 import javax.inject.Inject
@@ -41,10 +44,6 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
         retainInstance = true
         setHasOptionsMenu(true)
         subscribeToPresenter()
-
-        context?.let {
-            setServiceStart(it, true)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -89,8 +88,13 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
             }
 
             override fun onQueryTextChange(newText: String): Boolean = false
-
         })
+
+        val toggleItem = menu.findItem(R.id.menu_item_toggle_polling)
+        context?.let {
+            if (isServiceStarted(it)) toggleItem.setTitle(R.string.stop_polling)
+            else toggleItem.setTitle(R.string.start_polling)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -98,6 +102,14 @@ class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
             R.id.menu_item_clear -> {
                 adapter.deleteAll()
                 photoGalleryPresenter.getPhotos()
+                true
+            }
+            R.id.menu_item_toggle_polling -> {
+                context?.let {
+                    val shouldStartService = !isServiceStarted(it)
+                    setServiceStart(it, shouldStartService)
+                }
+                activity?.invalidateOptionsMenu()
                 true
             }
             else -> super.onOptionsItemSelected(item)

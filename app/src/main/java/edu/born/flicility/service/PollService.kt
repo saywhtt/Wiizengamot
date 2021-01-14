@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
+import androidx.work.WorkInfo.State.*
 import edu.born.flicility.R
 import edu.born.flicility.activities.PhotoGalleryActivity
 import edu.born.flicility.app.App
@@ -38,6 +39,17 @@ fun setServiceStart(context: Context, isOn: Boolean) {
     } else {
         workManager.cancelUniqueWork(UNIQUE_WORK_NAME)
     }
+}
+
+fun isServiceStarted(context: Context): Boolean {
+    var isStarted = false
+    val workManager = WorkManager.getInstance(context)
+    val workInfoList = workManager.getWorkInfosForUniqueWork(UNIQUE_WORK_NAME).get()
+    workInfoList.forEach {
+        if ((it.state == RUNNING) or (it.state == ENQUEUED))
+            isStarted = true
+    }
+    return isStarted
 }
 
 class PollService(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {

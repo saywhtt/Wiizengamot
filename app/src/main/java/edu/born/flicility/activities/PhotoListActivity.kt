@@ -12,7 +12,5 @@ class PhotoListActivity : AbstractFragmentActivity() {
         }
     }
 
-    override fun getFragment(): Fragment {
-        return PhotoListFragment()
-    }
+    override fun getFragment() = PhotoListFragment()
 }

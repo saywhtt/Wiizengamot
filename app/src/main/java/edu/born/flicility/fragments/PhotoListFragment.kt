@@ -1,16 +1,12 @@
 package edu.born.flicility.fragments
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import android.widget.SearchView
-import android.widget.Switch
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -20,13 +16,13 @@ import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.app.App
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
-import edu.born.flicility.presenters.PhotoGalleryPresenter
+import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.service.isServiceStarted
 import edu.born.flicility.service.setServiceStart
-import edu.born.flicility.views.PhotoGalleryView
+import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 
-class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
+class PhotoListFragment : VisibleFragment(), PhotoListView {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
@@ -38,7 +34,7 @@ class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
     lateinit var adapter: PhotoAdapter
 
     @Inject
-    lateinit var photoGalleryPresenter: PhotoGalleryPresenter
+    lateinit var mPhotoListPresenter: PhotoListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +56,7 @@ class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
 
         mRecyclerView.layoutManager = GridLayoutManager(activity, 3)
 
-        photoGalleryPresenter.getPhotos()
+        mPhotoListPresenter.getPhotos()
 
         if (!photoDownloader.isAlive) photoDownloader.start()
 
@@ -72,7 +68,7 @@ class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
     private fun prepareAdapter() {
         mRecyclerView.adapter = adapter
         adapter.onBottomReachedListener = {
-            photoGalleryPresenter.getNextPageByCurrentQuery()
+            mPhotoListPresenter.getNextPageByCurrentQuery()
         }
     }
 
@@ -86,7 +82,7 @@ class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
             override fun onQueryTextSubmit(query: String): Boolean {
                 hideKeyboard()
                 adapter.deleteAll()
-                photoGalleryPresenter.getPhotosByNewQuery(query)
+                mPhotoListPresenter.getPhotosByNewQuery(query)
                 return true
             }
 
@@ -108,16 +104,16 @@ class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
         return when (item.itemId) {
             R.id.menu_item_clear -> {
                 adapter.deleteAll()
-                photoGalleryPresenter.getPhotos()
+                mPhotoListPresenter.getPhotos()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun subscribeToPresenter() = (photoGalleryPresenter as BasePresenter<PhotoGalleryView>).subscribe(this)
+    private fun subscribeToPresenter() = (mPhotoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
 
-    private fun unsubscribeFromPresenter() = (photoGalleryPresenter as BasePresenter<PhotoGalleryView>).unsubscribe()
+    private fun unsubscribeFromPresenter() = (mPhotoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
 
     // NOTE: view implementation
     override fun hideKeyboard() {

@@ -1,19 +1,17 @@
 package edu.born.flicility.presenters
 
-import android.util.Log
-import edu.born.flicility.fragments.PhotoGalleryFragment
 import edu.born.flicility.model.Photo
 import edu.born.flicility.network.PhotoSearchResponse
 import edu.born.flicility.network.PhotoService
-import edu.born.flicility.presenters.PhotoGalleryPresenterImpl.Query.*
-import edu.born.flicility.views.PhotoGalleryView
+import edu.born.flicility.presenters.PhotoListPresenterImpl.Query.*
+import edu.born.flicility.views.PhotoListView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PhotoGalleryPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoGalleryView>(), PhotoGalleryPresenter {
+class PhotoListPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoListView>(), PhotoListPresenter {
 
-    private val TAG = PhotoGalleryPresenterImpl::class.java.canonicalName
+    private val TAG = PhotoListPresenterImpl::class.java.canonicalName
 
     sealed class Query(var currentPage: Int = 0,
                        var isNoMoreResults: Boolean = false) {

@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_wizen_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.PhotoGalleryActivity">
+        <activity android:name=".activities.PhotoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

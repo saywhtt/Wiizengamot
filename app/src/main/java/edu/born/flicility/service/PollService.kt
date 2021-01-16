@@ -7,12 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
 import androidx.work.WorkInfo.State.*
 import edu.born.flicility.R
-import edu.born.flicility.activities.PhotoGalleryActivity
+import edu.born.flicility.activities.PhotoListActivity
 import edu.born.flicility.app.App
 import edu.born.flicility.getLastResultId
 import edu.born.flicility.model.Photo
@@ -100,7 +99,7 @@ class PollService(context: Context, workerParams: WorkerParameters) : Worker(con
     }
 
     private fun getPreparedNotification(): Notification {
-        val startActivityIntent = PhotoGalleryActivity.newIntent(applicationContext)
+        val startActivityIntent = PhotoListActivity.newIntent(applicationContext)
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, startActivityIntent, 0)
 
         return NotificationCompat.Builder(applicationContext, NEW_PHOTO_NOTIFICATION_CHANNEL_ID)

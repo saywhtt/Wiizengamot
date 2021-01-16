@@ -1,6 +1,6 @@
 package edu.born.flicility.presenters
 
-interface PhotoGalleryPresenter {
+interface PhotoListPresenter {
     fun getPhotos()
     fun getPhotosByNewQuery(query: String)
     fun getNextPageByCurrentQuery()

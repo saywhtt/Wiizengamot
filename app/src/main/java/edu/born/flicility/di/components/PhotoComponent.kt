@@ -3,7 +3,7 @@ package edu.born.flicility.di.components
 import dagger.Subcomponent
 import edu.born.flicility.di.modules.PhotoModule
 import edu.born.flicility.di.scopes.PhotoScope
-import edu.born.flicility.fragments.PhotoGalleryFragment
+import edu.born.flicility.fragments.PhotoListFragment
 
 @PhotoScope
 @Subcomponent(modules = [PhotoModule::class])
@@ -15,5 +15,5 @@ interface PhotoComponent {
         fun build(): PhotoComponent
     }
 
-    fun inject(photoGalleryFragment: PhotoGalleryFragment)
+    fun inject(photoListFragment: PhotoListFragment)
 }

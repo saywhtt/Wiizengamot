@@ -10,16 +10,16 @@ import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.di.scopes.PhotoScope
 import edu.born.flicility.network.PhotoService
-import edu.born.flicility.presenters.PhotoGalleryPresenter
-import edu.born.flicility.presenters.PhotoGalleryPresenterImpl
+import edu.born.flicility.presenters.PhotoListPresenter
+import edu.born.flicility.presenters.PhotoListPresenterImpl
 
 @Module
 class PhotoModule {
 
     @Provides
     @PhotoScope
-    fun providePhotoGalleryPresenter(photoService: PhotoService): PhotoGalleryPresenter {
-        return PhotoGalleryPresenterImpl(photoService)
+    fun providePhotoGalleryPresenter(photoService: PhotoService): PhotoListPresenter {
+        return PhotoListPresenterImpl(photoService)
     }
 
     @Provides

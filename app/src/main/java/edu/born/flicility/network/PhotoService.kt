@@ -9,7 +9,6 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface PhotoService {
-
     @GET("photos")
     fun getPhotos(@Query("page") page: Int,
                   @Query("per_page") per_page: Int = PER_PAGE,

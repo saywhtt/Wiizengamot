@@ -1,12 +1,12 @@
 package edu.born.flicility.service
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.Activity
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
@@ -27,6 +27,10 @@ import javax.inject.Inject
 private val TAG: String get() = PollService::class.java.simpleName
 
 const val UNIQUE_WORK_NAME = "POLL_SERVICE"
+const val REQUEST_CODE = "REQUEST_CODE"
+const val NOTIFICATION = "NOTIFICATION"
+const val SHOW_NOTIFICATION = "edu.born.flicility.SHOW_NOTIFICATION"
+const val PERMISSION_PRIVATE = "edu.born.flicility.PRIVATE"
 
 const val NEW_PHOTO_NOTIFICATION_CHANNEL_ID = "newPhotoNotificationId"
 const val NEW_PHOTO_NOTIFICATION_CHANNEL_DESCRIPTION = "New photos notification"
@@ -72,7 +76,7 @@ class PollService(context: Context, workerParams: WorkerParameters) : Worker(con
                                 else {
                                     val resultId = it[0].id
                                     if (resultId != lastResultId) {
-                                        runNewPhotoNotification()
+                                        showNotification(getPreparedNotification())
                                         setLastResultId(applicationContext, resultId)
                                     }
                                 }
@@ -95,20 +99,11 @@ class PollService(context: Context, workerParams: WorkerParameters) : Worker(con
                 ?: false
     }
 
-    private fun runNewPhotoNotification() {
+    private fun getPreparedNotification(): Notification {
         val startActivityIntent = PhotoGalleryActivity.newIntent(applicationContext)
         val pendingIntent = PendingIntent.getActivity(applicationContext, 0, startActivityIntent, 0)
-        val notificationManager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                    NEW_PHOTO_NOTIFICATION_CHANNEL_ID,
-                    NEW_PHOTO_NOTIFICATION_CHANNEL_DESCRIPTION,
-                    NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-
-        val notification = NotificationCompat.Builder(applicationContext, NEW_PHOTO_NOTIFICATION_CHANNEL_ID)
+        return NotificationCompat.Builder(applicationContext, NEW_PHOTO_NOTIFICATION_CHANNEL_ID)
                 .setTicker(applicationContext.getString(R.string.new_photo_notification_title))
                 .setSmallIcon(android.R.drawable.ic_menu_report_image)
                 .setContentTitle(applicationContext.getString(R.string.new_photo_notification_title))
@@ -116,8 +111,21 @@ class PollService(context: Context, workerParams: WorkerParameters) : Worker(con
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build()
+    }
 
-        notificationManager.notify(0, notification)
+    private fun showNotification(notification: Notification) {
+        val intent = Intent(SHOW_NOTIFICATION).putExtra(REQUEST_CODE, 0)
+                .putExtra(NOTIFICATION, notification)
+
+        applicationContext.sendOrderedBroadcast(
+                intent,
+                PERMISSION_PRIVATE,
+                null,
+                null,
+                Activity.RESULT_OK,
+                null,
+                null
+        )
     }
 
 }

@@ -26,7 +26,7 @@ import edu.born.flicility.service.setServiceStart
 import edu.born.flicility.views.PhotoGalleryView
 import javax.inject.Inject
 
-class PhotoGalleryFragment : Fragment(), PhotoGalleryView {
+class PhotoGalleryFragment : VisibleFragment(), PhotoGalleryView {
 
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar

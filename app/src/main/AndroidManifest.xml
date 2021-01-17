@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.PhotoSearchActivity"
+            android:parentActivityName=".activities.PhotoListActivity" />
+
         <receiver
             android:name=".service.NotificationReceiver"
             android:exported="false">

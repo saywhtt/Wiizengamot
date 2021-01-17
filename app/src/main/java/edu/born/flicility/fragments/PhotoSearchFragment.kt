@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.adapters.PhotoAdapter
-import edu.born.flicility.app.App
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
@@ -19,7 +18,6 @@ import javax.inject.Inject
 class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-
     private lateinit var adapter: PhotoAdapter
 
     @Inject
@@ -29,7 +27,7 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.applicationContext as App).plusPhotoComponent().inject(this)
+        app.plusPhotoComponent().inject(this)
         adapter = PhotoAdapter(photoDownloader)
 
         retainInstance = true

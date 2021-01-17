@@ -17,7 +17,6 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(private val context: Context) {
-
     @Singleton
     @Provides
     fun provideFlickrFetchr(): FlickrFetchr {
@@ -68,5 +67,4 @@ class AppModule(private val context: Context) {
     fun providePhotoService(retrofit: Retrofit): PhotoService {
         return retrofit.create(PhotoService::class.java)
     }
-
 }

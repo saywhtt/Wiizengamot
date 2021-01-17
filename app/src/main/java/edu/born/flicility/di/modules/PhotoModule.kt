@@ -12,14 +12,21 @@ import edu.born.flicility.di.scopes.PhotoScope
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.presenters.PhotoListPresenterImpl
+import edu.born.flicility.presenters.PhotoSearchPresenter
+import edu.born.flicility.presenters.PhotoSearchPresenterImpl
 
 @Module
 class PhotoModule {
+    @Provides
+    @PhotoScope
+    fun providePhotoListPresenter(photoService: PhotoService): PhotoListPresenter {
+        return PhotoListPresenterImpl(photoService)
+    }
 
     @Provides
     @PhotoScope
-    fun providePhotoGalleryPresenter(photoService: PhotoService): PhotoListPresenter {
-        return PhotoListPresenterImpl(photoService)
+    fun providePhotoSearchPresenter(photoService: PhotoService): PhotoSearchPresenter {
+        return PhotoSearchPresenterImpl(photoService)
     }
 
     @Provides
@@ -33,11 +40,4 @@ class PhotoModule {
 
         return photoDownloader
     }
-
-    @Provides
-    @PhotoScope
-    fun providePhotoAdapter(photoDownloader: PhotoDownloader): PhotoAdapter {
-        return PhotoAdapter(photoDownloader)
-    }
-
 }

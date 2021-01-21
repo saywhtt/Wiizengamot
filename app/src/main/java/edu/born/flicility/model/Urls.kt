@@ -1,5 +1,8 @@
 package edu.born.flicility.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class Urls(@SerializedName("regular") var regular: String)
+@Parcelize
+data class Urls(@SerializedName("regular") var regular: String): Parcelable

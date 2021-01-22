@@ -13,7 +13,7 @@ import edu.born.flicility.model.Photo
 
 class PhotoPagerActivity : AppCompatActivity() {
     companion object {
-        private val EXTRA_PHOTO_LIST = "PHOTO_LIST"
+        private const val EXTRA_PHOTO_LIST = "PHOTO_LIST"
         fun newIntent(context: Context?, photoList: ArrayList<Photo>) =
                 Intent(context, PhotoPagerActivity::class.java).putParcelableArrayListExtra(EXTRA_PHOTO_LIST, photoList)
     }

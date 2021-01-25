@@ -8,11 +8,16 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import edu.born.flicility.DownloadState
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
+import edu.born.flicility.app.App
 import edu.born.flicility.model.Photo
+import edu.born.flicility.network.PhotoService
+import edu.born.flicility.presenters.PhotoPresenter
+import javax.inject.Inject
 
-class PhotoAdapter(private val photoDownloader: PhotoDownloader) :
+class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
         RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapter<Photo> {
 
     var onBottomReachedListener: (() -> Unit)? = null
@@ -25,13 +30,12 @@ class PhotoAdapter(private val photoDownloader: PhotoDownloader) :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
-
         if (itemCount - 1 == position) onBottomReachedListener?.invoke()
 
         val context = holder.mImageView.context
         val defaultImage = R.drawable.ic_launcher_foreground
         holder.bind(ContextCompat.getDrawable(context, defaultImage))
-        photoDownloader.queueThumbnail(holder, data[position].urls.regular)
+        photoPresenter.getImage(holder.mImageView, data[position].urls.regular, DownloadState.QUEUE)
     }
 
     override fun insertAll(items: List<Photo>) {

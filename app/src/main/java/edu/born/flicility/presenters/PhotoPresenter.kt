@@ -5,4 +5,5 @@ import edu.born.flicility.DownloadState
 
 interface PhotoPresenter {
     fun getImage(imageView: ImageView, url: String, state: DownloadState)
+    fun destroyDownloadQueue()
 }

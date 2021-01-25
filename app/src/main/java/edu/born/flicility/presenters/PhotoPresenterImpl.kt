@@ -56,4 +56,8 @@ class PhotoPresenterImpl(private val service: PhotoService) : BasePresenter<Phot
                     }
                 }
     }
+
+    override fun destroyDownloadQueue() {
+        customer.interrupt()
+    }
 }

@@ -24,5 +24,5 @@ interface PhotoService {
                          @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Call<PhotoSearchResponse>
 
     @GET
-    fun getImage(@Url url: String): Observable<ResponseBody>
+    fun getImage(@Url url: String): Call<ResponseBody>
 }

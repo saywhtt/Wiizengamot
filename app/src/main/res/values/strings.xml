@@ -8,4 +8,5 @@
     <string name="toggle_polling">Poll</string>
     <string name="notifications_is_on">You have subscribed to notifications</string>
     <string name="notifications_is_off">You have unsubscribed from notifications</string>
+    <string name="connection_error">Connection error</string>
 </resources>

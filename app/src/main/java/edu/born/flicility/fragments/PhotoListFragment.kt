@@ -1,5 +1,6 @@
 package edu.born.flicility.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ProgressBar
@@ -14,6 +15,7 @@ import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoListPresenter
+import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.service.isServiceStarted
 import edu.born.flicility.service.setServiceStart
 import edu.born.flicility.views.PhotoListView
@@ -28,11 +30,13 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     lateinit var photoDownloader: PhotoDownloader
     @Inject
     lateinit var photoListPresenter: PhotoListPresenter
+    @Inject
+    lateinit var photoPresenter: PhotoPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
-        adapter = PhotoAdapter(photoDownloader)
+        adapter = PhotoAdapter(photoPresenter, photoDownloader)
         retainInstance = true
         setHasOptionsMenu(true)
         subscribeToPresenter()
@@ -102,6 +106,8 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         progressBar.visibility = View.GONE
     }
 
+    override fun getViewContext() = context
+
     // NOTE: life cycle methods
 
     override fun onDestroyView() {
@@ -112,6 +118,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     override fun onDestroy() {
         super.onDestroy()
         unsubscribeFromPresenter()
+        photoPresenter.destroyDownloadQueue()
         //photoDownloader.quit()
     }
 }

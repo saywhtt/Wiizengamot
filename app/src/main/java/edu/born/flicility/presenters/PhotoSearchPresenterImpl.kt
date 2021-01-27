@@ -1,5 +1,7 @@
 package edu.born.flicility.presenters
 
+import android.widget.Toast
+import edu.born.flicility.R
 import edu.born.flicility.network.PhotoSearchResponse
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.views.PhotoSearchView
@@ -41,7 +43,12 @@ class PhotoSearchPresenterImpl(private val service: PhotoService) : BasePresente
                         }
                     }
 
-                    override fun onFailure(call: Call<PhotoSearchResponse>, t: Throwable) = t.printStackTrace()
+                    override fun onFailure(call: Call<PhotoSearchResponse>, t: Throwable) {
+                        view?.endDownloading()
+                        Toast.makeText(view?.getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
+                                .show()
+                        t.printStackTrace()
+                    }
                 })
     }
 }

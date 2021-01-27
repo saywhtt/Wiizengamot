@@ -11,6 +11,7 @@ import edu.born.flicility.R
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
+import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
 import edu.born.flicility.views.PhotoSearchView
 import javax.inject.Inject
@@ -24,11 +25,13 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     lateinit var photoDownloader: PhotoDownloader
     @Inject
     lateinit var photoSearchPresenter: PhotoSearchPresenter
+    @Inject
+    lateinit var photoPresenter: PhotoPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
-        adapter = PhotoAdapter(photoDownloader)
+        adapter = PhotoAdapter(photoPresenter, photoDownloader)
 
         retainInstance = true
         setHasOptionsMenu(true)
@@ -97,6 +100,8 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     override fun hideKeyboard() {
         super.hideKeyboard()
     }
+
+    override fun getViewContext() = context
 
     // NOTE: life cycle methods
 

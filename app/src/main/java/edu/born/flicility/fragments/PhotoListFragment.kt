@@ -28,9 +28,6 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     private lateinit var adapter: PhotoAdapter
 
     @Inject
-    lateinit var photoDownloader: PhotoDownloader
-
-    @Inject
     lateinit var photoListPresenter: PhotoListPresenter
 
     @Inject
@@ -39,7 +36,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
-        adapter = PhotoAdapter(photoPresenter, photoDownloader)
+        adapter = PhotoAdapter(photoPresenter)
         retainInstance = true
         setHasOptionsMenu(true)
         subscribeToPresenter()
@@ -55,7 +52,6 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         progressBar = view.findViewById(R.id.progress_view)
 
         photoListPresenter.getPhotos()
-        if (!photoDownloader.isAlive) photoDownloader.start()
 
         return view
     }
@@ -117,15 +113,9 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
 
     // NOTE: life cycle methods
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        photoDownloader.clearQueue()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         unsubscribeFromPresenter()
         photoPresenter.destroyDownloadQueue()
-        //photoDownloader.quit()
     }
 }

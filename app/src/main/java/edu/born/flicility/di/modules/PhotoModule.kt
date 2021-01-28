@@ -31,13 +31,7 @@ class PhotoModule {
 
     @Provides
     @PhotoScope
-    fun providePhotoDownloader(handler: Handler, context: Context): PhotoDownloader {
-        val photoDownloader = PhotoDownloader(handler)
-
-        photoDownloader.setPhotoDownloadListener {
-            holder: PhotoAdapter.PhotoHolder, bitmap: Bitmap? -> holder.bind(BitmapDrawable(context.resources, bitmap))
-        }
-
-        return photoDownloader
+    fun providePhotoPresenter(photoService: PhotoService): PhotoPresenter {
+        return PhotoPresenterImpl(photoService)
     }
 }

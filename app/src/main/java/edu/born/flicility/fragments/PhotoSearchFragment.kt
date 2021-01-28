@@ -23,9 +23,6 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     private lateinit var adapter: PhotoAdapter
 
     @Inject
-    lateinit var photoDownloader: PhotoDownloader
-
-    @Inject
     lateinit var photoSearchPresenter: PhotoSearchPresenter
 
     @Inject
@@ -34,7 +31,7 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
-        adapter = PhotoAdapter(photoPresenter, photoDownloader)
+        adapter = PhotoAdapter(photoPresenter)
 
         retainInstance = true
         setHasOptionsMenu(true)
@@ -49,8 +46,6 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
         recyclerView.adapter = getPreparedAdapter()
         recyclerView.layoutManager = GridLayoutManager(activity, 3)
         progressBar = view.findViewById(R.id.progress_view)
-
-        if (!photoDownloader.isAlive) photoDownloader.start()
 
         return view
     }
@@ -114,12 +109,11 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        photoDownloader.clearQueue()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         unsubscribeFromPresenter()
-        //photoDownloader.quit()
+        photoPresenter.destroyDownloadQueue()
     }
 }

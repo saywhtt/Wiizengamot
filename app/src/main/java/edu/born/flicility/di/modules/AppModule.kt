@@ -1,12 +1,10 @@
 package edu.born.flicility.di.modules
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
+
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
-import edu.born.flicility.FlickrFetchr
 import edu.born.flicility.network.API.BASE_URL
 import edu.born.flicility.network.PhotoService
 import okhttp3.OkHttpClient
@@ -18,55 +16,32 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(private val context: Context) {
-    @Singleton
-    @Provides
-    fun provideFlickrFetchr(): FlickrFetchr {
-        return FlickrFetchr()
-    }
 
     @Provides
     @Singleton
-    fun provideMainHandler(): Handler {
-        return Handler(Looper.getMainLooper())
-    }
+    fun provideContext() = context
 
     @Provides
     @Singleton
-    fun provideContext(): Context {
-        return context
-    }
+    fun provideGson() = Gson().newBuilder().create()
 
     @Provides
     @Singleton
-    fun provideGson(): Gson {
-        return Gson().newBuilder()
-                // .registerTypeAdapter(PhotoWrapper::class.java, PhotoWrapperDeserializer())
-                .create()
-    }
+    fun provideOkHttClient(): OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
 
     @Provides
     @Singleton
-    fun provideOkHttClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-                .addInterceptor(HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BODY))
-                .build()
-    }
+    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient) = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
 
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
-        return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .client(okHttpClient)
-                .build()
-    }
-
-    @Provides
-    @Singleton
-    fun providePhotoService(retrofit: Retrofit): PhotoService {
-        return retrofit.create(PhotoService::class.java)
-    }
+    fun providePhotoService(retrofit: Retrofit) = retrofit.create(PhotoService::class.java)
 }

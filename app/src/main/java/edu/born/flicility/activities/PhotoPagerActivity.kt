@@ -14,8 +14,10 @@ import edu.born.flicility.model.Photo
 class PhotoPagerActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_PHOTO_LIST = "PHOTO_LIST"
-        fun newIntent(context: Context?, photos: ArrayList<Photo>) =
+        private const val EXTRA_PHOTO_POSITION = "PHOTO_POSITION"
+        fun newIntent(context: Context?, position: Int, photos: ArrayList<Photo>) =
                 Intent(context, PhotoPagerActivity::class.java).putParcelableArrayListExtra(EXTRA_PHOTO_LIST, photos)
+                        .putExtra(EXTRA_PHOTO_POSITION, position)
     }
 
     private lateinit var viewPager: ViewPager
@@ -32,5 +34,6 @@ class PhotoPagerActivity : AppCompatActivity() {
             override fun getItem(position: Int) = PhotoFragment.newInstance(photos[position])
             override fun getCount() = photos.size
         }
+        viewPager.currentItem = intent.getIntExtra(EXTRA_PHOTO_POSITION, 0)
     }
 }

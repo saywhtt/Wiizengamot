@@ -1,16 +1,12 @@
 package edu.born.flicility.adapters
 
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.squareup.picasso.Picasso
-import edu.born.flicility.DownloadState
-import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.PhotoPresenter
@@ -29,13 +25,10 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
         if (itemCount - 1 == position) onBottomReachedListener?.onBottomReached()
-
-        val context = holder.imageView.context
-        val defaultImage = R.drawable.ic_launcher_foreground
-        holder.bind(ContextCompat.getDrawable(context, defaultImage))
         Picasso.get()
                 .load(data[position].urls.thumb)
-                .into(holder.imageView);
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(holder.imageView)
         //photoPresenter.bindImage(holder.imageView, data[position].urls.thumb, DownloadState.QUEUE)
     }
 
@@ -50,11 +43,5 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
         notifyDataSetChanged()
     }
 
-    class PhotoHolder(itemView: View) : ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.item_image_view)
-
-        fun bind(drawable: Drawable?) {
-            imageView.setImageDrawable(drawable)
-        }
-    }
+    class PhotoHolder(val itemView: View, val imageView: ImageView = itemView.findViewById(R.id.item_image_view)) : ViewHolder(itemView)
 }

@@ -33,8 +33,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter,
         val context = holder.imageView.context
         val defaultImage = R.drawable.ic_launcher_foreground
         holder.bind(ContextCompat.getDrawable(context, defaultImage))
-        //  photoDownloader.queueThumbnail(holder, data[position].urls.regular)
-        photoPresenter.bindImage(holder.imageView, data[position].urls.regular, DownloadState.QUEUE)
+        photoPresenter.bindImage(holder.imageView, data[position].urls.thumb, DownloadState.QUEUE)
     }
 
     override fun insertAll(items: List<Photo>) {

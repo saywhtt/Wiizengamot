@@ -1,6 +1,7 @@
 package edu.born.flicility.di.components
 
 import dagger.Component
+import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.di.modules.AppModule
 import edu.born.flicility.service.PollService
 import javax.inject.Singleton
@@ -10,4 +11,5 @@ import javax.inject.Singleton
 interface AppComponent {
     fun photoComponentBuilder(): PhotoComponent.Builder
     fun inject(pollService: PollService)
+    fun inject(photoAdapter: PhotoAdapter)
 }

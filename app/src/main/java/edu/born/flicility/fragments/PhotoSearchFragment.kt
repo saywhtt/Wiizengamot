@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
+import edu.born.flicility.adapters.OnBottomReachedListener
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
@@ -23,8 +24,10 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
 
     @Inject
     lateinit var photoDownloader: PhotoDownloader
+
     @Inject
     lateinit var photoSearchPresenter: PhotoSearchPresenter
+
     @Inject
     lateinit var photoPresenter: PhotoPresenter
 
@@ -53,7 +56,11 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
     }
 
     private fun getPreparedAdapter(): PhotoAdapter {
-        adapter.onBottomReachedListener = { photoSearchPresenter.getNextPhotosByCurrentQuery() }
+        adapter.onBottomReachedListener = object : OnBottomReachedListener {
+            override fun onBottomReached() {
+                photoSearchPresenter.getNextPhotosByCurrentQuery()
+            }
+        }
         return adapter
     }
 

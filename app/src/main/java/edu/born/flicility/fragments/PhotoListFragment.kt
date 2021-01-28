@@ -11,6 +11,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.activities.PhotoSearchActivity
+import edu.born.flicility.adapters.OnBottomReachedListener
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
@@ -28,8 +29,10 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
 
     @Inject
     lateinit var photoDownloader: PhotoDownloader
+
     @Inject
     lateinit var photoListPresenter: PhotoListPresenter
+
     @Inject
     lateinit var photoPresenter: PhotoPresenter
 
@@ -58,7 +61,11 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     }
 
     private fun getPreparedAdapter(): PhotoAdapter {
-        adapter.onBottomReachedListener = { photoListPresenter.getPhotos() }
+        adapter.onBottomReachedListener = object : OnBottomReachedListener {
+            override fun onBottomReached() {
+                photoListPresenter.getPhotos()
+            }
+        }
         return adapter
     }
 

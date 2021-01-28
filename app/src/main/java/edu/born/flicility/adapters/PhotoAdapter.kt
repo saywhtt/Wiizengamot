@@ -18,7 +18,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter,
                    private val photoDownloader: PhotoDownloader) :
         RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapter<Photo> {
 
-    var onBottomReachedListener: (() -> Unit)? = null
+    var onBottomReachedListener: OnBottomReachedListener? = null
 
     private val data: MutableList<Photo> = mutableListOf()
 
@@ -28,7 +28,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter,
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
-        if (itemCount - 1 == position) onBottomReachedListener?.invoke()
+        if (itemCount - 1 == position) onBottomReachedListener?.onBottomReached()
 
         val context = holder.imageView.context
         val defaultImage = R.drawable.ic_launcher_foreground

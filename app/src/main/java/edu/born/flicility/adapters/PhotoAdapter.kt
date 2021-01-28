@@ -8,14 +8,14 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.squareup.picasso.Picasso
 import edu.born.flicility.DownloadState
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.PhotoPresenter
 
-class PhotoAdapter(private val photoPresenter: PhotoPresenter,
-                   private val photoDownloader: PhotoDownloader) :
+class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
         RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapter<Photo> {
 
     var onBottomReachedListener: OnBottomReachedListener? = null
@@ -33,7 +33,10 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter,
         val context = holder.imageView.context
         val defaultImage = R.drawable.ic_launcher_foreground
         holder.bind(ContextCompat.getDrawable(context, defaultImage))
-        photoPresenter.bindImage(holder.imageView, data[position].urls.thumb, DownloadState.QUEUE)
+        Picasso.get()
+                .load(data[position].urls.thumb)
+                .into(holder.imageView);
+        //photoPresenter.bindImage(holder.imageView, data[position].urls.thumb, DownloadState.QUEUE)
     }
 
     override fun insertAll(items: List<Photo>) {

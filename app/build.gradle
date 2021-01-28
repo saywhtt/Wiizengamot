@@ -68,6 +68,9 @@ dependencies {
     def workVersion = "2.4.0"
     implementation "androidx.work:work-runtime-ktx:$workVersion"
 
+    def picassoVersion = "2.8"
+    implementation "com.squareup.picasso:picasso:$picassoVersion"
+
     implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

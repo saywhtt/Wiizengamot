@@ -12,6 +12,7 @@ import edu.born.flicility.network.PhotoService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -39,7 +40,7 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideGson(): Gson {
         return Gson().newBuilder()
-               // .registerTypeAdapter(PhotoWrapper::class.java, PhotoWrapperDeserializer())
+                // .registerTypeAdapter(PhotoWrapper::class.java, PhotoWrapperDeserializer())
                 .create()
     }
 
@@ -57,6 +58,7 @@ class AppModule(private val context: Context) {
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build()

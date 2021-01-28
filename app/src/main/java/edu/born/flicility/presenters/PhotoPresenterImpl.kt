@@ -69,26 +69,14 @@ class PhotoPresenterImpl(private val service: PhotoService) : BasePresenter<Phot
     }
 
     private fun downloadImage(imageView: ImageView, url: String) {
-        service.getImage(url).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val bitmapBytes = response.body()?.bytes()
-                var bitmap: Bitmap? = null
-                if (bitmapBytes != null) {
-                    bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.size)
-                }
-                mainHandler.post {
-                    imageView.setImageBitmap(bitmap)
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                mainHandler.post {
-                    Toast.makeText(view?.getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
-                            .show()
-                }
-                t.printStackTrace()
-            }
-        })
+        val bitmapBytes = service.getImage(url).execute().body()?.bytes()
+        var bitmap: Bitmap? = null
+        if (bitmapBytes != null) {
+            bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.size)
+        }
+        mainHandler.post {
+            imageView.setImageBitmap(bitmap)
+        }
     }
 
     override fun destroyDownloadQueue() {

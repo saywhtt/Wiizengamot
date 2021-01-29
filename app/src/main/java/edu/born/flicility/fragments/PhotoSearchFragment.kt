@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
+import edu.born.flicility.activities.PhotoPagerActivity
 import edu.born.flicility.adapters.OnBottomReachedListener
+import edu.born.flicility.adapters.OnPhotoClickedListener
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
@@ -18,6 +20,7 @@ import edu.born.flicility.views.PhotoSearchView
 import javax.inject.Inject
 
 class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: PhotoAdapter
@@ -54,6 +57,12 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
         adapter.onBottomReachedListener = object : OnBottomReachedListener {
             override fun onBottomReached() {
                 photoSearchPresenter.getNextPhotosByCurrentQuery()
+            }
+        }
+        adapter.onPhotoClickedListener = object : OnPhotoClickedListener {
+            override fun onPhotoClicked(position: Int, photos: ArrayList<Photo>) {
+                val intent = PhotoPagerActivity.newIntent(context, position, photos)
+                startActivity(intent)
             }
         }
         return adapter

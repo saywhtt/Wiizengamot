@@ -27,6 +27,7 @@
         <activity
             android:name=".activities.PhotoSearchActivity"
             android:parentActivityName=".activities.PhotoListActivity" />
+        <activity android:name=".activities.PhotoPagerActivity" />
 
         <receiver
             android:name=".service.NotificationReceiver"

@@ -5,6 +5,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import edu.born.flicility.R
+import edu.born.flicility.model.Photo
 
 abstract class AbstractFragmentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

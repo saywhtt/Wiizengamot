@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.squareup.picasso.Picasso
@@ -18,6 +20,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
     var onPhotoClickedListener: OnPhotoClickedListener? = null
 
     private val data: MutableList<Photo> = mutableListOf()
+    private val set = ConstraintSet()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder =
             PhotoHolder(view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item, parent, false))
@@ -25,19 +28,35 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
+
         if (itemCount - 1 == position) onBottomReachedListener?.onBottomReached()
-        holder.bind(data[position])
-        Picasso.get()
-                .load(data[position].urls.thumb)
-                .placeholder(R.drawable.ic_launcher_foreground)
-                .into(holder.imageView)
-        //photoPresenter.bindImage(holder.imageView, data[position].urls.thumb, DownloadState.QUEUE)
+
+        with(data[position]) {
+
+            holder.bind(this)
+
+            Picasso.get()
+                    .load(urls.regular)
+                    //.placeholder(R.drawable.ic_launcher_foreground)
+                    .into(holder.imageView)
+
+            with(set) {
+                val ratio = String.format("%d:%d", width, height)
+                clone(holder.constraintLayout)
+                setDimensionRatio(holder.imageView.id, ratio)
+                applyTo(holder.constraintLayout)
+            }
+        }
+
     }
 
     override fun insertAll(items: List<Photo>) {
+
         val wasNoDataBefore = data.isEmpty()
+        val dataSizeBefore = data.size
         data.addAll(items)
         if (wasNoDataBefore) notifyDataSetChanged()
+        else notifyItemRangeInserted(dataSizeBefore, items.size)
     }
 
     override fun deleteAll() {
@@ -45,8 +64,11 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
         notifyDataSetChanged()
     }
 
-    inner class PhotoHolder(val view: View,
-                            val imageView: ImageView = view.findViewById(R.id.item_image_view)) : ViewHolder(view), View.OnClickListener {
+    inner class PhotoHolder(view: View) : ViewHolder(view), View.OnClickListener {
+
+        val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.item_constraint_layout)
+        val imageView: ImageView = view.findViewById(R.id.item_image_view)
+
         private var photo: Photo? = null
 
         init {

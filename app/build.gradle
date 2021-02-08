@@ -44,9 +44,13 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     def materialComponentsVersion = '1.2.1'
     implementation "com.google.android.material:material:$materialComponentsVersion"
+
+    def cardViewVersion = '1.0.0'
+    implementation "androidx.cardview:cardview:$cardViewVersion"
 
     def rxJavaVersion = '3.0.0'
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
@@ -70,6 +74,9 @@ dependencies {
 
     def picassoVersion = "2.8"
     implementation "com.squareup.picasso:picasso:$picassoVersion"
+
+    def fragment_version = "1.2.5"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 
     implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.12'

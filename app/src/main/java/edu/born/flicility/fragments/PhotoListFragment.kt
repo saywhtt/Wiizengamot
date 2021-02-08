@@ -1,14 +1,12 @@
 package edu.born.flicility.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
-import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.activities.PhotoPagerActivity
 import edu.born.flicility.activities.PhotoSearchActivity
@@ -48,12 +46,14 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
         val view = inflater.inflate(R.layout.fragment_photo_list, container, false)
+
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.adapter = getPreparedAdapter()
-        recyclerView.layoutManager = GridLayoutManager(activity, 3)
-        progressBar = view.findViewById(R.id.progress_view)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
+        progressBar = view.findViewById(R.id.progress_view)
         photoListPresenter.getPhotos()
 
         return view
@@ -82,6 +82,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
             val toggleItem = menu.findItem(R.id.menu_item_toggle_polling).actionView as SwitchMaterial
             toggleItem.isChecked = isServiceStarted(it)
             toggleItem.setOnCheckedChangeListener { buttonView, isOn ->
+                photoListPresenter.getPhotos()
                 setServiceStart(it, isOn)
                 val toastDescription = if (isOn) R.string.notifications_is_on else R.string.notifications_is_off
                 Toast.makeText(it, toastDescription, Toast.LENGTH_LONG).show()

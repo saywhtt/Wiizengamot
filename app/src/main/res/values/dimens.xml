@@ -3,4 +3,7 @@
     <dimen name="vertical_margin">10dp</dimen>
     <dimen name="normal_text">16sp</dimen>
     <dimen name="medium_text">14dp</dimen>
+    <dimen name="normal_margin">16dp</dimen>
+    <dimen name="medium_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
 </resources>

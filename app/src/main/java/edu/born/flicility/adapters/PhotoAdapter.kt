@@ -1,5 +1,6 @@
 package edu.born.flicility.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,11 +52,10 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
     }
 
     override fun insertAll(items: List<Photo>) {
-
         val wasNoDataBefore = data.isEmpty()
         val dataSizeBefore = data.size
         data.addAll(items)
-        if (wasNoDataBefore) notifyDataSetChanged()
+        if (wasNoDataBefore) notifyItemRangeInserted(0, items.size)
         else notifyItemRangeInserted(dataSizeBefore, items.size)
     }
 

@@ -5,11 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
 import edu.born.flicility.views.PhotoView
+import java.lang.Exception
 
 class PhotoFragment : VisibleFragment(), PhotoView {
 
@@ -29,6 +33,7 @@ class PhotoFragment : VisibleFragment(), PhotoView {
     private lateinit var likeImageView: ImageView
     private lateinit var likesTextView: TextView
     private lateinit var descriptionTextView: TextView
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +49,7 @@ class PhotoFragment : VisibleFragment(), PhotoView {
         likeImageView = view.findViewById(R.id.fragment_photo_like_image_view)
         likesTextView = view.findViewById(R.id.fragment_photo_likes_text_view)
         descriptionTextView = view.findViewById(R.id.fragment_photo_description)
+        progressBar = view.findViewById(R.id.fragment_photo_progress_bar)
 
         if (photo.likedByUser) likeImageView.setImageResource(R.drawable.ic_like)
         else likeImageView.setImageResource(R.drawable.ic_empty_like)
@@ -52,10 +58,22 @@ class PhotoFragment : VisibleFragment(), PhotoView {
 
         descriptionTextView.text = photo.description
 
+        progressBar.visibility = View.VISIBLE
         Picasso.get()
                 .load(photo.urls.regular)
                 .placeholder(R.drawable.ic_launcher_foreground)
-                .into(photoImageView)
+                .into(photoImageView, object : Callback {
+                    override fun onSuccess() {
+                        progressBar.visibility = View.GONE
+                    }
+
+                    override fun onError(e: Exception?) {
+                        progressBar.visibility = View.GONE
+                        Toast.makeText(context, R.string.connection_error, Toast.LENGTH_SHORT)
+                                .show()
+                        e?.printStackTrace()
+                    }
+                })
 
         return view
     }

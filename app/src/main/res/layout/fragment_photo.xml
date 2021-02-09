@@ -5,8 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/fragment_photo_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:translationZ="2dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_line"
+        android:id="@+id/fragment_photo_guide_line"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -16,7 +28,7 @@
         android:id="@+id/fragment_photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/guide_line"
+        app:layout_constraintBottom_toTopOf="@id/fragment_photo_guide_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +43,7 @@
         android:textColor="@android:color/black"
         android:textSize="@dimen/normal_text"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/guide_line"
+        app:layout_constraintBottom_toTopOf="@id/fragment_photo_guide_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Something description" />
@@ -47,7 +59,7 @@
         app:layout_constraintEnd_toStartOf="@id/fragment_photo_button_open_web_view"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guide_line">
+        app:layout_constraintTop_toTopOf="@id/fragment_photo_guide_line">
 
         <ImageView
             android:id="@+id/fragment_photo_like_image_view"
@@ -73,6 +85,6 @@
         android:src="@drawable/ic_web_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/fragment_photo_like_group"
-        app:layout_constraintTop_toTopOf="@id/guide_line" />
+        app:layout_constraintTop_toTopOf="@id/fragment_photo_guide_line" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

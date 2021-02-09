@@ -23,8 +23,8 @@ class PhotoPagerActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager
     private lateinit var photos: List<Photo>
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_photo_pager)
 
         photos = intent.getParcelableArrayListExtra<Photo>(EXTRA_PHOTO_LIST) as List<Photo>

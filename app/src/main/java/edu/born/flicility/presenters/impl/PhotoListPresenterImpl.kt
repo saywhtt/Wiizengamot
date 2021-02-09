@@ -1,9 +1,12 @@
-package edu.born.flicility.presenters
+package edu.born.flicility.presenters.impl
 
 import android.widget.Toast
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
 import edu.born.flicility.network.PhotoService
+import edu.born.flicility.presenters.BasePresenter
+import edu.born.flicility.presenters.PhotoListPresenter
+import edu.born.flicility.presenters.Query
 import edu.born.flicility.views.PhotoListView
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +20,6 @@ class PhotoListPresenterImpl(private val service: PhotoService) : BasePresenter<
     override fun getPhotos() {
         if (query.isNoMoreResults) return
         view?.startDownloading()
-
         service.getPhotos(page = ++query.currentPage)
                 .enqueue(object : Callback<List<Photo>> {
                     override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {

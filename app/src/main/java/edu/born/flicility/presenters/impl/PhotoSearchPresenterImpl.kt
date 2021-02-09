@@ -1,9 +1,12 @@
-package edu.born.flicility.presenters
+package edu.born.flicility.presenters.impl
 
 import android.widget.Toast
 import edu.born.flicility.R
 import edu.born.flicility.network.PhotoSearchResponse
 import edu.born.flicility.network.PhotoService
+import edu.born.flicility.presenters.BasePresenter
+import edu.born.flicility.presenters.PhotoSearchPresenter
+import edu.born.flicility.presenters.Query
 import edu.born.flicility.views.PhotoSearchView
 import retrofit2.Call
 import retrofit2.Callback

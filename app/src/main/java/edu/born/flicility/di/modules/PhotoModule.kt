@@ -5,6 +5,9 @@ import dagger.Provides
 import edu.born.flicility.di.scopes.PhotoScope
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.presenters.*
+import edu.born.flicility.presenters.impl.PhotoListPresenterImpl
+import edu.born.flicility.presenters.impl.ConcurrencyPhotoPresenterImpl
+import edu.born.flicility.presenters.impl.PhotoSearchPresenterImpl
 
 @Module
 class PhotoModule {
@@ -23,6 +26,6 @@ class PhotoModule {
     @Provides
     @PhotoScope
     fun providePhotoPresenter(photoService: PhotoService): PhotoPresenter {
-        return PhotoPresenterImpl(photoService)
+        return ConcurrencyPhotoPresenterImpl(photoService)
     }
 }

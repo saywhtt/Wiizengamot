@@ -1,6 +1,7 @@
 package edu.born.flicility.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -21,6 +22,7 @@ import edu.born.flicility.service.isServiceStarted
 import edu.born.flicility.service.setServiceStart
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
+import javax.inject.Named
 
 class PhotoListFragment : VisibleFragment(), PhotoListView {
 
@@ -29,6 +31,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     private lateinit var adapter: PhotoAdapter
 
     @Inject
+    @Named("photoListFragment")
     lateinit var photoListPresenter: PhotoListPresenter
 
     @Inject
@@ -53,7 +56,8 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         recyclerView.adapter = getPreparedAdapter()
         recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        progressBar = view.findViewById(R.id.progress_view)
+        progressBar = view.findViewById(R.id.fragment_photo_list_progress_bar)
+
         photoListPresenter.getPhotos()
 
         return view
@@ -67,7 +71,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         }
         adapter.onPhotoClickedListener = object : OnPhotoClickedListener {
             override fun onPhotoClicked(position: Int, photos: ArrayList<Photo>) {
-                val intent = PhotoPagerActivity.newIntent(context, position, photos)
+                val intent = PhotoPagerActivity.newIntent(context, position, photos, photoListPresenter.getQuery())
                 startActivity(intent)
             }
         }
@@ -116,6 +120,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     }
 
     override fun endDownloading() {
+        Log.d("E1", "PhotoListFragment endDownloading()")
         progressBar.visibility = View.GONE
     }
 

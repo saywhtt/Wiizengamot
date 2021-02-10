@@ -38,4 +38,10 @@ class PhotoListPresenterImpl(private val service: PhotoService) : BasePresenter<
                     }
                 })
     }
+
+    override fun getQuery() = query
+
+    override fun setQuery(query: Query.All) {
+        this.query = query
+    }
 }

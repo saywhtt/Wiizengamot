@@ -58,24 +58,33 @@ class PhotoFragment : VisibleFragment(), PhotoView {
 
         descriptionTextView.text = photo.description
 
-        progressBar.visibility = View.VISIBLE
+        startDownloading()
         Picasso.get()
                 .load(photo.urls.regular)
-                .placeholder(R.drawable.ic_launcher_foreground)
                 .into(photoImageView, object : Callback {
                     override fun onSuccess() {
                         progressBar.visibility = View.GONE
                     }
 
                     override fun onError(e: Exception?) {
-                        progressBar.visibility = View.GONE
-                        Toast.makeText(context, R.string.connection_error, Toast.LENGTH_SHORT)
+                        endDownloading()
+                        Toast.makeText(getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
                                 .show()
                         e?.printStackTrace()
                     }
                 })
 
         return view
+    }
+
+    // NOTE: view implementation
+
+    override fun startDownloading() {
+        progressBar.visibility = View.VISIBLE
+    }
+
+    override fun endDownloading() {
+        progressBar.visibility = View.GONE
     }
 
     override fun getViewContext() = context

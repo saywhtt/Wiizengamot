@@ -1,11 +1,16 @@
 package edu.born.flicility.presenters
 
-sealed class Query(var currentPage: Int = 0,
-                   var isNoMoreResults: Boolean = false) {
-    class All(currentPage: Int = 0,
-              isNoMoreResults: Boolean = false) : Query(currentPage, isNoMoreResults)
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+sealed class Query(open var currentPage: Int = 0,
+                   open var isNoMoreResults: Boolean = false) : Parcelable {
+    @Parcelize
+    class All(override var currentPage: Int = 0,
+              override var isNoMoreResults: Boolean = false) : Query(currentPage, isNoMoreResults)
+
+    @Parcelize
     class Search(var text: String? = null,
-                 currentPage: Int = 0,
-                 isNoMoreResults: Boolean = false) : Query(currentPage, isNoMoreResults)
+                 override var currentPage: Int = 0,
+                 override var isNoMoreResults: Boolean = false) : Query(currentPage, isNoMoreResults)
 }

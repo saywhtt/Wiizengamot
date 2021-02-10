@@ -1,4 +1,4 @@
 package edu.born.flicility.views
 
-interface PhotoView: BaseView {
+interface PhotoView : BaseView {
 }

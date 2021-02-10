@@ -7,15 +7,15 @@ import edu.born.flicility.network.PhotoService
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
 import edu.born.flicility.presenters.Query
-import edu.born.flicility.views.PhotoSearchView
+import edu.born.flicility.views.PhotoListView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 private val TAG = PhotoSearchPresenterImpl::class.java.simpleName
 
-class PhotoSearchPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoSearchView>(), PhotoSearchPresenter {
-    private val query = Query.Search()
+class PhotoSearchPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoListView>(), PhotoSearchPresenter {
+    private var query = Query.Search()
 
     override fun getPhotosByNewQuery(text: String) {
         query.text = text
@@ -53,5 +53,11 @@ class PhotoSearchPresenterImpl(private val service: PhotoService) : BasePresente
                         t.printStackTrace()
                     }
                 })
+    }
+
+    override fun getQuery() = query
+
+    override fun setQuery(query: Query.Search) {
+        this.query = query
     }
 }

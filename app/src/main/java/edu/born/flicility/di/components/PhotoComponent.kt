@@ -1,6 +1,7 @@
 package edu.born.flicility.di.components
 
 import dagger.Subcomponent
+import edu.born.flicility.activities.PhotoPagerActivity
 import edu.born.flicility.di.modules.PhotoModule
 import edu.born.flicility.di.scopes.PhotoScope
 import edu.born.flicility.fragments.PhotoListFragment
@@ -18,4 +19,5 @@ interface PhotoComponent {
 
     fun inject(photoListFragment: PhotoListFragment)
     fun inject(photoSearchFragment: PhotoSearchFragment)
+    fun inject(photoPagerActivity: PhotoPagerActivity)
 }

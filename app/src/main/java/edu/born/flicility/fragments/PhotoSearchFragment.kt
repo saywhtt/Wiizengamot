@@ -6,7 +6,6 @@ import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import edu.born.flicility.PhotoDownloader
 import edu.born.flicility.R
 import edu.born.flicility.activities.PhotoPagerActivity
 import edu.born.flicility.adapters.OnBottomReachedListener
@@ -16,10 +15,10 @@ import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
-import edu.born.flicility.views.PhotoSearchView
+import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 
-class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
+class PhotoSearchFragment : VisibleFragment(), PhotoListView {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -48,7 +47,7 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.adapter = getPreparedAdapter()
         recyclerView.layoutManager = GridLayoutManager(activity, 3)
-        progressBar = view.findViewById(R.id.progress_view)
+        progressBar = view.findViewById(R.id.fragment_photo_list_progress_bar)
 
         return view
     }
@@ -61,7 +60,7 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
         }
         adapter.onPhotoClickedListener = object : OnPhotoClickedListener {
             override fun onPhotoClicked(position: Int, photos: ArrayList<Photo>) {
-                val intent = PhotoPagerActivity.newIntent(context, position, photos)
+                val intent = PhotoPagerActivity.newIntent(context, position, photos, photoSearchPresenter.getQuery())
                 startActivity(intent)
             }
         }
@@ -90,9 +89,9 @@ class PhotoSearchFragment : VisibleFragment(), PhotoSearchView {
 
     // NOTE: subscribe logic
 
-    private fun subscribeToPresenter() = (photoSearchPresenter as BasePresenter<PhotoSearchView>).subscribe(this)
+    private fun subscribeToPresenter() = (photoSearchPresenter as BasePresenter<PhotoListView>).subscribe(this)
 
-    private fun unsubscribeFromPresenter() = (photoSearchPresenter as BasePresenter<PhotoSearchView>).unsubscribe()
+    private fun unsubscribeFromPresenter() = (photoSearchPresenter as BasePresenter<PhotoListView>).unsubscribe()
 
     // NOTE: view implementation
 

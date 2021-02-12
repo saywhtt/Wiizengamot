@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -75,8 +76,14 @@ dependencies {
     def picassoVersion = "2.8"
     implementation "com.squareup.picasso:picasso:$picassoVersion"
 
-    def fragment_version = "1.2.5"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    def fragmentVersion = "1.2.5"
+    implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
+
+    def firebaseAuthVersion = "20.0.2"
+    implementation "com.google.firebase:firebase-auth:$firebaseAuthVersion"
+    implementation "com.google.firebase:firebase-auth-ktx:$firebaseAuthVersion"
+    def firebaseBomVersion = "26.4.0"
+    implementation "com.google.firebase:firebase-bom:$firebaseBomVersion"
 
     implementation 'com.google.code.gson:gson:2.8.6'
     testImplementation 'junit:junit:4.12'

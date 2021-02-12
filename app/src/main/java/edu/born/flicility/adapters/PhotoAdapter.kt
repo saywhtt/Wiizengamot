@@ -1,6 +1,5 @@
 package edu.born.flicility.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +11,21 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.squareup.picasso.Picasso
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
-import edu.born.flicility.presenters.PhotoPresenter
 
-class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
-        RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapter<Photo> {
+class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapter<Photo> {
+
+    private lateinit var recyclerView: RecyclerView
 
     var onBottomReachedListener: OnBottomReachedListener? = null
     var onPhotoClickedListener: OnPhotoClickedListener? = null
 
     private val data: MutableList<Photo> = mutableListOf()
-    private val set = ConstraintSet()
+    private val photoHolderConstraintSet = ConstraintSet()
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder =
             PhotoHolder(view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item, parent, false))
@@ -30,7 +34,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
 
     override fun onBindViewHolder(holder: PhotoHolder, position: Int) {
 
-        if (itemCount - 1 == position) onBottomReachedListener?.onBottomReached()
+        if (position == (itemCount - 1)) onBottomReachedListener?.onBottomReached()
 
         with(data[position]) {
 
@@ -38,25 +42,34 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
 
             Picasso.get()
                     .load(urls.regular)
-                    //.placeholder(R.drawable.ic_launcher_foreground)
                     .into(holder.imageView)
 
-            with(set) {
+            with(photoHolderConstraintSet) {
                 val ratio = String.format("%d:%d", width, height)
                 clone(holder.constraintLayout)
                 setDimensionRatio(holder.imageView.id, ratio)
                 applyTo(holder.constraintLayout)
             }
         }
-
     }
 
-    override fun insertAll(items: List<Photo>) {
+    override fun update(items: List<Photo>) {
         val wasNoDataBefore = data.isEmpty()
         val dataSizeBefore = data.size
+
         data.addAll(items)
-        if (wasNoDataBefore) notifyItemRangeInserted(0, items.size)
-        else notifyItemRangeInserted(dataSizeBefore, items.size)
+
+        if (wasNoDataBefore) {
+            notifyItemRangeInserted(0, items.size)
+        } else {
+            notifyItemRangeInserted(dataSizeBefore, items.size)
+        }
+    }
+
+    override fun updateWithStartPosition(items: List<Photo>, position: Int) {
+        data.clear()
+        data.addAll(items)
+        recyclerView.layoutManager?.scrollToPosition(position)
     }
 
     override fun deleteAll() {
@@ -69,7 +82,7 @@ class PhotoAdapter(private val photoPresenter: PhotoPresenter) :
         val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.item_constraint_layout)
         val imageView: ImageView = view.findViewById(R.id.item_image_view)
 
-        private var photo: Photo? = null
+        private lateinit var photo: Photo
 
         init {
             view.setOnClickListener(this)

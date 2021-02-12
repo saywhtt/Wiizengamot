@@ -1,5 +1,6 @@
 package edu.born.flicility.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -22,13 +23,17 @@ import javax.inject.Named
 class PhotoPagerActivity : AppCompatActivity(), PhotoListView {
 
     companion object {
-        private const val EXTRA_PHOTO_LIST = "PHOTO_LIST"
+        private const val EXTRA_PHOTOS = "PHOTOS"
         private const val EXTRA_PHOTO_POSITION = "PHOTO_POSITION"
         private const val EXTRA_QUERY = "QUERY"
         fun newIntent(context: Context?, position: Int, photos: ArrayList<Photo>, query: Query) =
-                Intent(context, PhotoPagerActivity::class.java).putParcelableArrayListExtra(EXTRA_PHOTO_LIST, photos)
+                Intent(context, PhotoPagerActivity::class.java).putParcelableArrayListExtra(EXTRA_PHOTOS, photos)
                         .putExtra(EXTRA_PHOTO_POSITION, position)
                         .putExtra(EXTRA_QUERY, query)
+
+        fun getPhotos(result: Intent) = result.getParcelableArrayListExtra<Photo>(EXTRA_PHOTOS) as MutableList<Photo>
+        fun getPosition(result: Intent) = result.getIntExtra(EXTRA_PHOTO_POSITION, 0)
+        fun getQuery(result: Intent) = result.getParcelableExtra<Query>(EXTRA_QUERY)
     }
 
     @Inject
@@ -52,24 +57,26 @@ class PhotoPagerActivity : AppCompatActivity(), PhotoListView {
         val app = applicationContext as App
         app.plusPhotoComponent().inject(this)
 
-        photos = intent.getParcelableArrayListExtra<Photo>(EXTRA_PHOTO_LIST) as MutableList<Photo>
+        photos = intent.getParcelableArrayListExtra<Photo>(EXTRA_PHOTOS) as MutableList<Photo>
         query = intent.getParcelableExtra(EXTRA_QUERY) ?: throw IllegalArgumentException()
 
         subscribeToPresenter()
 
-        when (query) {
-            is Query.All -> photoListPresenter.setQuery(query as Query.All)
-            is Query.Search -> photoSearchPresenter.setQuery(query as Query.Search)
-        }
+        executeByQuery({
+            photoListPresenter.setQuery(query as Query.All)
+        }, {
+            photoSearchPresenter.setQuery(query as Query.Search)
+        })
 
         viewPager = findViewById(R.id.photo_view_pager)
         viewPager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             override fun getItem(position: Int): PhotoFragment {
                 if (photos.size - 1 == position) {
-                    when (query) {
-                        is Query.All -> photoListPresenter.getPhotos()
-                        is Query.Search -> photoSearchPresenter.getNextPhotosByCurrentQuery()
-                    }
+                    executeByQuery({
+                        photoListPresenter.getPhotos()
+                    }, {
+                        photoSearchPresenter.getNextPhotosByCurrentQuery()
+                    })
                 }
                 return PhotoFragment.newInstance(photos[position])
             }
@@ -79,22 +86,37 @@ class PhotoPagerActivity : AppCompatActivity(), PhotoListView {
             override fun setPrimaryItem(container: ViewGroup, position: Int, any: Any) {
                 super.setPrimaryItem(container, position, any)
                 currentItemPosition = position
+                setPreparedResult(currentItemPosition)
             }
         }
         viewPager.currentItem = intent.getIntExtra(EXTRA_PHOTO_POSITION, 0)
     }
 
-    private fun subscribeToPresenter() {
-        when (query) {
-            is Query.All -> (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
-            is Query.Search -> (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
-        }
+    private fun subscribeToPresenter() =
+            executeByQuery({
+                (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
+            }, {
+                (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
+            })
+
+    private fun unsubscribeFromPresenter() =
+            executeByQuery({
+                (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
+            }, {
+                (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
+            })
+
+    private fun setPreparedResult(position: Int) {
+        val intent = Intent().putParcelableArrayListExtra(EXTRA_PHOTOS, photos as ArrayList<Photo>)
+                .putExtra(EXTRA_PHOTO_POSITION, position)
+                .putExtra(EXTRA_QUERY, query)
+        setResult(Activity.RESULT_OK, intent)
     }
 
-    private fun unsubscribeFromPresenter() {
+    private fun executeByQuery(byAll: () -> Unit, bySearch: () -> Unit) {
         when (query) {
-            is Query.All -> (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
-            is Query.Search -> (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
+            is Query.All -> byAll.invoke()
+            is Query.Search -> bySearch.invoke()
         }
     }
 

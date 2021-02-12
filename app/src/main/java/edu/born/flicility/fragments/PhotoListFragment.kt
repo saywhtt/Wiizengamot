@@ -1,7 +1,8 @@
 package edu.born.flicility.fragments
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -18,6 +19,7 @@ import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.presenters.PhotoPresenter
+import edu.born.flicility.presenters.Query
 import edu.born.flicility.service.isServiceStarted
 import edu.born.flicility.service.setServiceStart
 import edu.born.flicility.views.PhotoListView
@@ -25,6 +27,10 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class PhotoListFragment : VisibleFragment(), PhotoListView {
+
+    companion object {
+        private const val PHOTO_DETAIL_REQUEST_CODE = 0
+    }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -40,7 +46,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
-        adapter = PhotoAdapter(photoPresenter)
+        adapter = PhotoAdapter()
         retainInstance = true
         setHasOptionsMenu(true)
         subscribeToPresenter()
@@ -58,6 +64,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
 
         progressBar = view.findViewById(R.id.fragment_photo_list_progress_bar)
 
+        // start query
         photoListPresenter.getPhotos()
 
         return view
@@ -72,7 +79,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         adapter.onPhotoClickedListener = object : OnPhotoClickedListener {
             override fun onPhotoClicked(position: Int, photos: ArrayList<Photo>) {
                 val intent = PhotoPagerActivity.newIntent(context, position, photos, photoListPresenter.getQuery())
-                startActivity(intent)
+                startActivityForResult(intent, PHOTO_DETAIL_REQUEST_CODE)
             }
         }
         return adapter
@@ -85,7 +92,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         context?.let {
             val toggleItem = menu.findItem(R.id.menu_item_toggle_polling).actionView as SwitchMaterial
             toggleItem.isChecked = isServiceStarted(it)
-            toggleItem.setOnCheckedChangeListener { buttonView, isOn ->
+            toggleItem.setOnCheckedChangeListener { _, isOn ->
                 photoListPresenter.getPhotos()
                 setServiceStart(it, isOn)
                 val toastDescription = if (isOn) R.string.notifications_is_on else R.string.notifications_is_off
@@ -105,6 +112,20 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) return
+        if (requestCode == PHOTO_DETAIL_REQUEST_CODE) {
+            data?.let {
+                val photos = PhotoPagerActivity.getPhotos(it)
+                val position = PhotoPagerActivity.getPosition(it)
+                val query = PhotoPagerActivity.getQuery(it) as Query.All
+                photoListPresenter.setQuery(query)
+                adapter.updateWithStartPosition(photos, position)
+            }
+        }
+    }
+
     private fun subscribeToPresenter() = (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
 
     private fun unsubscribeFromPresenter() = (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
@@ -112,7 +133,7 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     // NOTE: view implementation
 
     override fun update(data: List<Photo>) {
-        adapter.insertAll(data)
+        adapter.update(data)
     }
 
     override fun startDownloading() {
@@ -120,7 +141,6 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     }
 
     override fun endDownloading() {
-        Log.d("E1", "PhotoListFragment endDownloading()")
         progressBar.visibility = View.GONE
     }
 

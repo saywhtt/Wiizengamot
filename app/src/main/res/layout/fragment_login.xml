@@ -1,131 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.LoginFragment">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/fragment_login_image_view_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_margin"
-        android:src="@mipmap/ic_launcher_wizen"
-        app:layout_constraintBottom_toTopOf="@id/fragment_login_text_view_welcome_title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <View
+        android:id="@+id/fragment_login_background1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/holo_red_dark"
+        app:layout_constraintBottom_toTopOf="@id/fragment_login_background2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_weight="65" />
 
-    <TextView
-        android:id="@+id/fragment_login_text_view_welcome_title"
-        style="@style/MainTitle"
-        android:text="@string/sing_in_please"
-        app:layout_constraintBottom_toTopOf="@id/fragment_login_button_email"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_login_image_view_logo" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_login_button_email"
+    <View
+        android:id="@+id/fragment_login_background2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/fragment_login_button_password"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_login_text_view_welcome_title">
-
-        <ImageView
-            android:id="@+id/fragment_login_image_view_email"
-            android:layout_width="50dp"
-            android:layout_height="60dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_baseline_person_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/fragment_login_edit_text_view_email"
-            style="@style/MainEditText"
-            android:hint="@string/edit_text_view_email_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fragment_login_image_view_email"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            style="@style/Captions"
-            android:text="@string/edit_text_view_email_captions"
-            app:layout_constraintStart_toEndOf="@id/fragment_login_image_view_email"
-            app:layout_constraintTop_toBottomOf="@id/fragment_login_edit_text_view_email" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/fragment_login_button_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/fragment_login_button_sign_in"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_login_button_email">
-
-        <ImageView
-            android:id="@+id/fragment_login_image_view_password"
-            android:layout_width="50dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_baseline_vpn_key_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <EditText
-            android:id="@+id/fragment_login_edit_text_view_password"
-            style="@style/MainEditText"
-            android:hint="@string/edit_text_view_password_hint"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fragment_login_image_view_password"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            style="@style/Captions"
-            android:text="@string/edit_text_view_password_captions"
-            app:layout_constraintStart_toEndOf="@id/fragment_login_image_view_password"
-            app:layout_constraintTop_toBottomOf="@id/fragment_login_edit_text_view_password" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/fragment_login_button_sign_in"
-        style="@style/MainButton"
-        android:text="@string/sign_in_button_text"
-        app:layout_constraintBottom_toTopOf="@id/fragment_blank_group_forgot_or_sign_up"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_login_button_password" />
+        android:layout_height="0dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_login_background1"
+        app:layout_constraintVertical_weight="35" />
 
     <LinearLayout
-        android:id="@+id/fragment_blank_group_forgot_or_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/vertical_margin"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_login_button_sign_in">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/fragment_login_text_view_forgot_password"
-            style="@style/HintSubtitle"
-            android:text="@string/forgot_password_subtitle_hint" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
 
-        <View style="@style/VerticalDivider" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fragment_login_main_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="32dp"
+            android:layout_weight="80"
+            app:cardElevation="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/fragment_login_text_view_sign_up"
-            style="@style/HintSubtitle"
-            android:text="@string/sign_up_subtitle_hint" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/fragment_login_image_view_logo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/ic_launcher_wizen" />
+
+                <TextView
+                    android:id="@+id/fragment_login_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sing_in_please"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="32sp" />
+
+                <Button
+                    android:id="@+id/fragment_login_button_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginEnd="64dp"
+                    android:backgroundTint="@android:color/black"
+                    android:text="@string/sign_in_button_text"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="10" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

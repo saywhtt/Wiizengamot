@@ -14,7 +14,7 @@ import edu.born.flicility.databinding.FragmentPhotoBinding
 import edu.born.flicility.model.Photo
 import edu.born.flicility.views.PhotoView
 
-class PhotoFragment : VisibleFragment(), PhotoView {
+class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
 
     interface Callback {
         fun loadUrl(uri: Uri)
@@ -22,17 +22,14 @@ class PhotoFragment : VisibleFragment(), PhotoView {
 
     companion object {
         private const val ARG_PHOTO = "ARG_PHOTO"
-        fun newInstance(photo: Photo) =
-                PhotoFragment().apply {
-                    arguments = bundleOf(
-                            ARG_PHOTO to photo
-                    )
-                }
+        fun newInstance(photo: Photo) = PhotoFragment().apply {
+            arguments = bundleOf(
+                    ARG_PHOTO to photo
+            )
+        }
     }
 
     private var callback: Callback? = null
-    private var viewBinding: FragmentPhotoBinding? = null
-    private val binding get() = viewBinding!!
     private lateinit var photo: Photo
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,26 +42,26 @@ class PhotoFragment : VisibleFragment(), PhotoView {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        viewBinding = FragmentPhotoBinding.inflate(inflater, container, false)
 
         with(binding) {
-            if (photo.likedByUser) detailPhotoLikeImage.setImageResource(R.drawable.ic_like)
-            else detailPhotoLikeImage.setImageResource(R.drawable.ic_empty_like)
 
-            detailPhotoNumberOfLikes.text = "${photo.likes}"
+            if (photo.likedByUser) fragmentPhotoIvLike.setImageResource(R.drawable.ic_like)
+            else fragmentPhotoIvLike.setImageResource(R.drawable.ic_empty_like)
 
-            detailPhotoDescription.text = photo.description
+            fragmentPhotoTvNumberOfLikes.text = "${photo.likes}"
 
-            detailPhotoButtonOpenWebView.setOnClickListener {
+            fragmentPhotoTvDescription.text = photo.description
+
+            fragmentPhotoBtnOpenWebView.setOnClickListener {
                 callback?.loadUrl(Uri.parse(photo.links.html))
             }
 
             startDownloading()
             Picasso.get()
                     .load(photo.urls.regular)
-                    .into(detailPhotoImage, object : com.squareup.picasso.Callback {
+                    .into(fragmentPhotoIvMain, object : com.squareup.picasso.Callback {
                         override fun onSuccess() {
-                            detailPhotoProgressBar.visibility = View.GONE
+                            endDownloading()
                         }
 
                         override fun onError(e: Exception?) {
@@ -79,17 +76,22 @@ class PhotoFragment : VisibleFragment(), PhotoView {
         return binding.root
     }
 
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPhotoBinding =
+            FragmentPhotoBinding::inflate
+
     // NOTE: view implementation
 
     override fun startDownloading() {
-        //  detailPhotoProgressBar.visibility = View.VISIBLE
+        binding.fragmentPhotoPb.visibility = View.VISIBLE
     }
 
     override fun endDownloading() {
-        // detailPhotoProgressBar.visibility = View.GONE
+        binding.fragmentPhotoPb.visibility = View.GONE
     }
 
     override fun getViewContext() = context
+
+    // NOTE: life cycle methods
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

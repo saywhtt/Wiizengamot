@@ -6,14 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import edu.born.flicility.app.App
 import edu.born.flicility.service.PERMISSION_PRIVATE
 import edu.born.flicility.service.SHOW_NOTIFICATION
 
-open class VisibleFragment : Fragment() {
+abstract class VisibleFragment<VB : ViewBinding> : ViewBindingFragment<VB>() {
     protected lateinit var app: App
 
     private val offNotificationReceiver = object : BroadcastReceiver() {

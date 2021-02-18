@@ -22,8 +22,11 @@ abstract class ViewBindingFragment<VB : ViewBinding> : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         _binding = bindingInflater.invoke(inflater, container, false)
+        setup()
         return _binding?.root
     }
+
+    protected abstract fun setup()
 
     override fun onDestroyView() {
         super.onDestroyView()

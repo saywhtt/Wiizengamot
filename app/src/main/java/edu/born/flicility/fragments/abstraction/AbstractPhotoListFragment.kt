@@ -23,18 +23,9 @@ abstract class AbstractPhotoListFragment : VisibleFragment<FragmentPhotoListBind
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
-
-        with(binding.fragmentPhotoListRecyclerView) {
-            adapter = getPreparedAdapter()
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        }
-
-        return binding.root
+    override fun setup() = with(binding.fragmentPhotoListRecyclerView) {
+        adapter = getPreparedAdapter()
+        layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
     abstract fun getPreparedAdapter(): PhotoAdapter

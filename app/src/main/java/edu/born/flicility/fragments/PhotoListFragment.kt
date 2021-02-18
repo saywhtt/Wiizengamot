@@ -15,6 +15,7 @@ import edu.born.flicility.activities.PhotoSearchActivity
 import edu.born.flicility.adapters.OnBottomReachedListener
 import edu.born.flicility.adapters.OnPhotoClickedListener
 import edu.born.flicility.adapters.PhotoAdapter
+import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoListPresenter

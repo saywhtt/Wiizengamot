@@ -11,10 +11,14 @@ import androidx.core.os.bundleOf
 import com.squareup.picasso.Picasso
 import edu.born.flicility.R
 import edu.born.flicility.databinding.FragmentPhotoBinding
+import edu.born.flicility.fragments.abstraction.VisibleFragment
 import edu.born.flicility.model.Photo
 import edu.born.flicility.views.PhotoView
 
 class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
+
+    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPhotoBinding =
+            FragmentPhotoBinding::inflate
 
     interface Callback {
         fun loadUrl(uri: Uri)
@@ -37,47 +41,33 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
         photo = arguments?.getParcelable(ARG_PHOTO) ?: throw IllegalArgumentException()
     }
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
-    ): View? {
+    override fun setup() = with(binding) {
+        if (photo.likedByUser) fragmentPhotoIvLike.setImageResource(R.drawable.ic_like)
+        else fragmentPhotoIvLike.setImageResource(R.drawable.ic_empty_like)
 
-        with(binding) {
-
-            if (photo.likedByUser) fragmentPhotoIvLike.setImageResource(R.drawable.ic_like)
-            else fragmentPhotoIvLike.setImageResource(R.drawable.ic_empty_like)
-
-            fragmentPhotoTvNumberOfLikes.text = "${photo.likes}"
-
-            fragmentPhotoTvDescription.text = photo.description
-
-            fragmentPhotoBtnOpenWebView.setOnClickListener {
-                callback?.loadUrl(Uri.parse(photo.links.html))
-            }
-
-            startDownloading()
-            Picasso.get()
-                    .load(photo.urls.regular)
-                    .into(fragmentPhotoIvMain, object : com.squareup.picasso.Callback {
-                        override fun onSuccess() {
-                            endDownloading()
-                        }
-
-                        override fun onError(e: Exception?) {
-                            endDownloading()
-                            Toast.makeText(getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
-                                    .show()
-                            e?.printStackTrace()
-                        }
-                    })
+        fragmentPhotoTvNumberOfLikes.text = "${photo.likes}"
+        fragmentPhotoTvDescription.text = photo.description
+        fragmentPhotoBtnOpenWebView.setOnClickListener {
+            callback?.loadUrl(Uri.parse(photo.links.html))
         }
 
-        return binding.root
+        startDownloading()
+        Picasso.get()
+                .load(photo.urls.regular)
+                .into(fragmentPhotoIvMain, object : com.squareup.picasso.Callback {
+                    override fun onSuccess() {
+                        endDownloading()
+                    }
+
+                    override fun onError(e: Exception?) {
+                        endDownloading()
+                        Toast.makeText(getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
+                                .show()
+                        e?.printStackTrace()
+                    }
+                })
     }
 
-    override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPhotoBinding =
-            FragmentPhotoBinding::inflate
 
     // NOTE: view implementation
 

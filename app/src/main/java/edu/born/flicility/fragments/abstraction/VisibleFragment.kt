@@ -1,4 +1,4 @@
-package edu.born.flicility.fragments
+package edu.born.flicility.fragments.abstraction
 
 import android.app.Activity
 import android.content.BroadcastReceiver
@@ -6,11 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import edu.born.flicility.app.App
 import edu.born.flicility.service.PERMISSION_PRIVATE

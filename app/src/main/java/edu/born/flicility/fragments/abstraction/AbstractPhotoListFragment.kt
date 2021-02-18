@@ -1,4 +1,4 @@
-package edu.born.flicility.fragments
+package edu.born.flicility.fragments.abstraction
 
 import android.os.Bundle
 import android.view.LayoutInflater

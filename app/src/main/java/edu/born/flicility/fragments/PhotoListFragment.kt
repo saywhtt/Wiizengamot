@@ -3,11 +3,11 @@ package edu.born.flicility.fragments
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
-import android.widget.ProgressBar
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.born.flicility.R
 import edu.born.flicility.activities.PhotoPagerActivity
@@ -26,15 +26,13 @@ import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 import javax.inject.Named
 
-class PhotoListFragment : VisibleFragment(), PhotoListView {
+class PhotoListFragment : AbstractPhotoListFragment() {
 
     companion object {
         private const val PHOTO_DETAIL_REQUEST_CODE = 0
     }
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var adapter: PhotoAdapter
+    override lateinit var adapter: PhotoAdapter
 
     @Inject
     @Named("photoListFragment")
@@ -47,30 +45,16 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
         adapter = PhotoAdapter()
-        retainInstance = true
-        setHasOptionsMenu(true)
         subscribeToPresenter()
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val view = inflater.inflate(R.layout.fragment_photo_list, container, false)
-
-        recyclerView = view.findViewById(R.id.recycler_view)
-        recyclerView.adapter = getPreparedAdapter()
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        progressBar = view.findViewById(R.id.fragment_photo_list_progress_bar)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         // start query
         photoListPresenter.getPhotos()
-
-        return view
     }
 
-    private fun getPreparedAdapter(): PhotoAdapter {
+    override fun getPreparedAdapter(): PhotoAdapter {
         adapter.onBottomReachedListener = object : OnBottomReachedListener {
             override fun onBottomReached() {
                 photoListPresenter.getPhotos()
@@ -129,22 +113,6 @@ class PhotoListFragment : VisibleFragment(), PhotoListView {
     private fun subscribeToPresenter() = (photoListPresenter as BasePresenter<PhotoListView>).subscribe(this)
 
     private fun unsubscribeFromPresenter() = (photoListPresenter as BasePresenter<PhotoListView>).unsubscribe()
-
-    // NOTE: view implementation
-
-    override fun update(data: List<Photo>) {
-        adapter.update(data)
-    }
-
-    override fun startDownloading() {
-        progressBar.visibility = View.VISIBLE
-    }
-
-    override fun endDownloading() {
-        progressBar.visibility = View.GONE
-    }
-
-    override fun getViewContext() = context
 
     // NOTE: life cycle methods
 

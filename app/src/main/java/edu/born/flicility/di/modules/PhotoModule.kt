@@ -8,6 +8,7 @@ import edu.born.flicility.presenters.*
 import edu.born.flicility.presenters.impl.PhotoListPresenterImpl
 import edu.born.flicility.presenters.impl.ConcurrencyPhotoPresenterImpl
 import edu.born.flicility.presenters.impl.PhotoSearchPresenterImpl
+import edu.born.flicility.views.PhotoListView
 import javax.inject.Named
 
 @Module
@@ -15,20 +16,20 @@ class PhotoModule {
     @Provides
     @PhotoScope
     @Named("photoListFragment")
-    fun providePhotoListPresenter(photoService: PhotoService): PhotoListPresenter {
+    fun providePhotoListPresenter(photoService: PhotoService): PhotoListPresenter<PhotoListView> {
         return PhotoListPresenterImpl(photoService)
     }
 
     @Provides
     @PhotoScope
     @Named("photoPagerActivity")
-    fun providePhotoPagerPresenter(photoService: PhotoService): PhotoListPresenter {
+    fun providePhotoPagerPresenter(photoService: PhotoService): PhotoListPresenter<PhotoListView> {
         return PhotoListPresenterImpl(photoService)
     }
 
     @Provides
     @PhotoScope
-    fun providePhotoSearchPresenter(photoService: PhotoService): PhotoSearchPresenter {
+    fun providePhotoSearchPresenter(photoService: PhotoService): PhotoSearchPresenter<PhotoListView> {
         return PhotoSearchPresenterImpl(photoService)
     }
 

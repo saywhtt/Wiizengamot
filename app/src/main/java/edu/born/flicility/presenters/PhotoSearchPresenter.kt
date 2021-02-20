@@ -1,8 +1,7 @@
 package edu.born.flicility.presenters
 
-interface PhotoSearchPresenter {
+import edu.born.flicility.views.BaseView
+
+interface PhotoSearchPresenter<BV : BaseView>: BasePhotosPresenter<BV> {
     fun getPhotosByNewQuery(text: String)
-    fun getNextPhotosByCurrentQuery()
-    fun getQuery(): Query.Search
-    fun setQuery(query: Query.Search)
 }

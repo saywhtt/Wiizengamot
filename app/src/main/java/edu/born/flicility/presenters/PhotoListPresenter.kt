@@ -1,7 +1,5 @@
 package edu.born.flicility.presenters
 
-interface PhotoListPresenter {
-    fun getPhotos()
-    fun getQuery(): Query.All
-    fun setQuery(query: Query.All)
-}
+import edu.born.flicility.views.BaseView
+
+interface PhotoListPresenter<BV : BaseView>: BasePhotosPresenter<BV>

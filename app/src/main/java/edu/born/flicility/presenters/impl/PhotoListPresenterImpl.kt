@@ -4,9 +4,9 @@ import android.widget.Toast
 import edu.born.flicility.R
 import edu.born.flicility.model.Photo
 import edu.born.flicility.network.PhotoService
-import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.presenters.Query
+import edu.born.flicility.presenters.QueryType
 import edu.born.flicility.views.PhotoListView
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,8 +14,10 @@ import retrofit2.Response
 
 private val TAG = PhotoListPresenterImpl::class.java.simpleName
 
-class PhotoListPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoListView>(), PhotoListPresenter {
-    private var query = Query.All()
+class PhotoListPresenterImpl(private val service: PhotoService) : PhotoListPresenter<PhotoListView> {
+
+    override var query = Query(type = QueryType.ALL)
+    override var view: PhotoListView? = null
 
     override fun getPhotos() {
         if (query.isNoMoreResults) return
@@ -39,9 +41,11 @@ class PhotoListPresenterImpl(private val service: PhotoService) : BasePresenter<
                 })
     }
 
-    override fun getQuery() = query
+    override fun subscribe(view: PhotoListView) {
+        this.view = view
+    }
 
-    override fun setQuery(query: Query.All) {
-        this.query = query
+    override fun unsubscribe() {
+        this.view = null
     }
 }

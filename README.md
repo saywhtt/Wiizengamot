@@ -15,4 +15,17 @@ Android - application for viewing images from [unsplash.com](https://unsplash.co
 8. Dagger2
 9. Architecture MVP
 
-![](docs/img/all.jpg) ![](docs/img/find.jpg) ![](docs/img/ditail.jpg)
+#### Wi. App Screenshots
+
+<table style="border: 0px solid transparent;">
+  <tr>
+    <td>All</td>
+     <td>Find</td>
+     <td>Detail</td>
+  </tr>
+  <tr>
+    <td><img src="docs/img/all.jpg" width=270 height=580></td>
+    <td><img src="docs/img/find.jpg" width=270 height=580></td>
+    <td><img src="docs/img/ditail.jpg" width=270 height=580></td>
+  </tr>
+ </table>

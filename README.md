@@ -17,14 +17,18 @@ Android - application for viewing images from [unsplash.com](https://unsplash.co
 #### Wi. App Screenshots
 
 <table style="border: 0px solid transparent;">
-  <tr>
+  <tr align="center">
     <td>All</td>
-     <td>Find</td>
-     <td>Detail</td>
+    <td>Find</td>
   </tr>
   <tr>
-    <td><img src="docs/img/all.jpg" width=270 height=580></td>
-    <td><img src="docs/img/find.jpg" width=270 height=580></td>
-    <td><img src="docs/img/ditail.jpg" width=270 height=580></td>
+    <td><img src="docs/img/all.jpg" height=580></td>
+    <td><img src="docs/img/find.jpg" height=580></td>
   </tr>
- </table>
+  <tr align="center">
+    <td>Detail</td>
+  </tr>
+  <tr>
+    <td><img src="docs/img/ditail.jpg" height=580></td>
+  </tr>
+</table>

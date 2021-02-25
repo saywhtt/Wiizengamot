@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
+import edu.born.flicility.R
 import edu.born.flicility.app.App
 
 /*import edu.born.flicility.service.PERMISSION_PRIVATE
@@ -30,6 +31,7 @@ abstract class VisibleFragment<VB : ViewBinding> : ViewBindingFragment<VB>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
         app = activity?.applicationContext as App
     }
 

@@ -1,6 +1,5 @@
 package edu.born.flicility.fragments
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +9,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.squareup.picasso.Picasso
 import edu.born.flicility.R
+import edu.born.flicility.activities.PhotoWebPageActivity
 import edu.born.flicility.databinding.FragmentPhotoBinding
 import edu.born.flicility.fragments.abstraction.VisibleFragment
 import edu.born.flicility.model.Photo
@@ -20,10 +20,6 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentPhotoBinding =
             FragmentPhotoBinding::inflate
 
-    interface Callback {
-        fun loadUrl(uri: Uri)
-    }
-
     companion object {
         private const val ARG_PHOTO = "ARG_PHOTO"
         fun newInstance(photo: Photo) = PhotoFragment().apply {
@@ -33,13 +29,13 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
         }
     }
 
-    private var callback: Callback? = null
     private lateinit var photo: Photo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         photo = arguments?.getParcelable(ARG_PHOTO) ?: throw IllegalArgumentException()
     }
+
 
     override fun setup() = with(binding) {
         if (photo.likedByUser) fragmentPhotoIvLike.setImageResource(R.drawable.ic_like)
@@ -48,7 +44,8 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
         fragmentPhotoTvNumberOfLikes.text = "${photo.likes}"
         fragmentPhotoTvDescription.text = photo.description
         fragmentPhotoBtnOpenWebView.setOnClickListener {
-            callback?.loadUrl(Uri.parse(photo.links.html))
+            val intent = PhotoWebPageActivity.newIntent(activity, Uri.parse(photo.links.html))
+            startActivity(intent)
         }
 
         startDownloading()
@@ -68,28 +65,15 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
                 })
     }
 
-
     // NOTE: view implementation
 
     override fun startDownloading() {
-        binding.fragmentPhotoPb.visibility = View.VISIBLE
+        if (!blockAsyncCalls) binding.fragmentPhotoPb.visibility = View.VISIBLE
     }
 
     override fun endDownloading() {
-        binding.fragmentPhotoPb.visibility = View.GONE
+        if (!blockAsyncCalls) binding.fragmentPhotoPb.visibility = View.GONE
     }
 
     override fun getViewContext() = context
-
-    // NOTE: life cycle methods
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        callback = context as Callback
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        callback = null
-    }
 }

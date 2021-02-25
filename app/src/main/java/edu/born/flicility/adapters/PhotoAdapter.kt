@@ -19,7 +19,7 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapt
     var onBottomReachedListener: OnBottomReachedListener? = null
     var onPhotoClickedListener: OnPhotoClickedListener? = null
 
-    private val data: MutableList<Photo> = mutableListOf()
+    private var data: MutableList<Photo> = mutableListOf()
     private val photoHolderConstraintSet = ConstraintSet()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -67,7 +67,6 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapt
     }
 
     override fun updateWithStartPosition(items: List<Photo>, position: Int) {
-        data.clear()
         data.addAll(items)
         recyclerView.layoutManager?.scrollToPosition(position)
     }

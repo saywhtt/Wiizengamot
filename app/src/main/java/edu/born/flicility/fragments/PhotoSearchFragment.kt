@@ -3,9 +3,13 @@ package edu.born.flicility.fragments
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.SearchView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import edu.born.flicility.R
+import edu.born.flicility.activities.SingleFragmentActivity.Companion.CLOSE_FRAGMENT_REQUEST_KEY
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
@@ -34,6 +38,8 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
         adapter = PhotoAdapter()
         basePhotosPresenter = photoSearchPresenter
         subscribeToPresenter()
+        actionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun setup() {
@@ -70,6 +76,16 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
             searchView.clearFocus()
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            setFragmentResult(CLOSE_FRAGMENT_REQUEST_KEY, bundleOf())
+            actionBar?.setDisplayHomeAsUpEnabled(false)
+            hideKeyboard()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     // NOTE: life cycle methods

@@ -17,7 +17,7 @@ class SingleFragmentActivity : AppCompatActivity() {
         // keys
         const val START_SEARCH_REQUEST_KEY = "START_SEARCH_REQUEST_KEY"
         const val START_PHOTO_PAGER_REQUEST_KEY = "START_PHOTO_PAGER_REQUEST_KEY"
-        const val END_PHOTO_PAGER_REQUEST_KEY = "END_PHOTO_PAGER_REQUEST_KEY"
+        const val CLOSE_FRAGMENT_REQUEST_KEY = "END_PHOTO_PAGER_REQUEST_KEY"
         const val END_PHOTO_PAGER_BY_ALL_REQUEST_KEY = "END_PHOTO_PAGER_BY_ALL_REQUEST_KEY"
         const val END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY = "END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY"
 
@@ -44,13 +44,7 @@ class SingleFragmentActivity : AppCompatActivity() {
                     val fragment = PhotoPagerFragment.newInstance(position, photos, query)
                     replaceFragment(fragment)
                 })
-        setFragmentResultListenerByKey(END_PHOTO_PAGER_REQUEST_KEY,
-                FragmentResultListener { _, result ->
-                    val uri = requireNotNull(result.getParcelable<Uri>(URI_ARG))
-                    val fragment = PhotoWebPageFragment.newInstance(uri)
-                    replaceFragment(fragment)
-                })
-        setFragmentResultListenerByKey(END_PHOTO_PAGER_REQUEST_KEY,
+        setFragmentResultListenerByKey(CLOSE_FRAGMENT_REQUEST_KEY,
                 FragmentResultListener { _, _ -> supportFragmentManager.popBackStack() })
     }
 

@@ -23,7 +23,7 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideGson() = Gson().newBuilder().create()
+    fun provideGson(): Gson = Gson().newBuilder().create()
 
     @Provides
     @Singleton
@@ -34,7 +34,7 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient) = Retrofit.Builder()
+    fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
@@ -43,5 +43,5 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun providePhotoService(retrofit: Retrofit) = retrofit.create(PhotoService::class.java)
+    fun providePhotoService(retrofit: Retrofit): PhotoService = retrofit.create(PhotoService::class.java)
 }

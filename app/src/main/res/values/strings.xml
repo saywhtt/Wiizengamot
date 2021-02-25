@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wizengamot</string>
+    <string name="app_name">wiizengamot</string>
     <string name="search">Search</string>
     <string name="clear">Clear search</string>
     <string name="polling">Polling</string>
@@ -17,4 +17,5 @@
     <string name="sign_in_button_text">SIGN IN</string>
     <string name="forgot_password_subtitle_hint">Forgot password?</string>
     <string name="sign_up_subtitle_hint">Sign up</string>
+    <string name="web_view_subtitle">unsplash.com</string>
 </resources>

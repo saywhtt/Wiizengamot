@@ -4,9 +4,11 @@ import dagger.Module
 import dagger.Provides
 import edu.born.flicility.di.scopes.PhotoScope
 import edu.born.flicility.network.PhotoService
-import edu.born.flicility.presenters.*
-import edu.born.flicility.presenters.impl.PhotoListPresenterImpl
+import edu.born.flicility.presenters.PhotoListPresenter
+import edu.born.flicility.presenters.PhotoPresenter
+import edu.born.flicility.presenters.PhotoSearchPresenter
 import edu.born.flicility.presenters.impl.ConcurrencyPhotoPresenterImpl
+import edu.born.flicility.presenters.impl.PhotoListPresenterImpl
 import edu.born.flicility.presenters.impl.PhotoSearchPresenterImpl
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Named

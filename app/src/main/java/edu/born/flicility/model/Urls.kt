@@ -9,4 +9,4 @@ data class Urls(@SerializedName("raw") var raw: String,
                 @SerializedName("full") var full: String,
                 @SerializedName("regular") var regular: String,
                 @SerializedName("small") var small: String,
-                @SerializedName("thumb") var thumb: String): Parcelable
+                @SerializedName("thumb") var thumb: String) : Parcelable

@@ -3,13 +3,13 @@ package edu.born.flicility.di.components
 import dagger.Component
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.di.modules.AppModule
-import edu.born.flicility.service.PollService
+//import edu.born.flicility.service.PollService
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
     fun photoComponentBuilder(): PhotoComponent.Builder
-    fun inject(pollService: PollService)
     fun inject(photoAdapter: PhotoAdapter)
+    //fun inject(pollService: PollService)
 }

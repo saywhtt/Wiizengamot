@@ -26,10 +26,13 @@ abstract class ViewBindingFragment<VB : ViewBinding> : Fragment() {
         return _binding?.root
     }
 
+    protected var blockAsyncCalls = false
+
     protected abstract fun setup()
 
     override fun onDestroyView() {
         super.onDestroyView()
+        blockAsyncCalls = true
         _binding = null
     }
 }

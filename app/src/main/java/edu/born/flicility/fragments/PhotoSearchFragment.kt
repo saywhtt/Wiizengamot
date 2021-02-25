@@ -4,49 +4,45 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.widget.SearchView
+import androidx.fragment.app.setFragmentResultListener
 import edu.born.flicility.R
-import edu.born.flicility.activities.PhotoPagerActivity
-import edu.born.flicility.adapters.OnBottomReachedListener
-import edu.born.flicility.adapters.OnPhotoClickedListener
+import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
-import edu.born.flicility.model.Photo
-import edu.born.flicility.presenters.BasePresenter
+import edu.born.flicility.presenters.BasePhotosPresenter
 import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
+
 
 class PhotoSearchFragment : AbstractPhotoListFragment() {
 
     override lateinit var adapter: PhotoAdapter
 
     @Inject
-    lateinit var photoSearchPresenter: PhotoSearchPresenter
+    lateinit var photoSearchPresenter: PhotoSearchPresenter<PhotoListView>
 
     @Inject
     lateinit var photoPresenter: PhotoPresenter
+
+    override lateinit var basePhotosPresenter: BasePhotosPresenter<PhotoListView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app.plusPhotoComponent().inject(this)
         adapter = PhotoAdapter()
+        basePhotosPresenter = photoSearchPresenter
         subscribeToPresenter()
     }
 
-    override fun getPreparedAdapter(): PhotoAdapter {
-        adapter.onBottomReachedListener = object : OnBottomReachedListener {
-            override fun onBottomReached() {
-                photoSearchPresenter.getNextPhotosByCurrentQuery()
-            }
+    override fun setup() {
+        super.setup()
+        setFragmentResultListener(END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY) { _, result ->
+            val (photos, position, query) = PhotoPagerFragment.splitArguments(result)
+            photoSearchPresenter.query = query
+            adapter.updateWithStartPosition(photos, position)
         }
-        adapter.onPhotoClickedListener = object : OnPhotoClickedListener {
-            override fun onPhotoClicked(position: Int, photos: ArrayList<Photo>) {
-                val intent = PhotoPagerActivity.newIntent(context, position, photos, photoSearchPresenter.getQuery())
-                startActivity(intent)
-            }
-        }
-        return adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,15 +61,16 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
 
             override fun onQueryTextChange(newText: String): Boolean = false
         })
+        if (!blockReCreatedFromBackStack) { // set focus
+            searchView.onActionViewExpanded()
+            blockReCreatedFromBackStack = true
+        } else { // set focus w/ query text and w/o up keyboard
+            searchView.setQuery(photoSearchPresenter.query.text, false)
+            searchView.isIconified = false
+            searchView.clearFocus()
+        }
 
-        searchView.onActionViewExpanded()
     }
-
-    // NOTE: subscribe logic
-
-    private fun subscribeToPresenter() = (photoSearchPresenter as BasePresenter<PhotoListView>).subscribe(this)
-
-    private fun unsubscribeFromPresenter() = (photoSearchPresenter as BasePresenter<PhotoListView>).unsubscribe()
 
     // NOTE: life cycle methods
 

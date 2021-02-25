@@ -18,16 +18,16 @@
         android:roundIcon="@mipmap/ic_launcher_wizen_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.PhotoListActivity">
+        <activity android:name=".activities.SingleFragmentActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".activities.PhotoSearchActivity"
-            android:parentActivityName=".activities.PhotoListActivity" />
-        <activity android:name=".activities.PhotoPagerActivity" />
+            android:name=".activities.PhotoWebPageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
 
         <receiver
             android:name=".service.NotificationReceiver"

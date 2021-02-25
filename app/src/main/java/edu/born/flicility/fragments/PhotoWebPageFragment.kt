@@ -11,6 +11,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import edu.born.flicility.R
 import edu.born.flicility.databinding.FragmentPhotoWebPageBinding
 import edu.born.flicility.fragments.abstraction.VisibleFragment
 
@@ -20,10 +21,10 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
             FragmentPhotoWebPageBinding::inflate
 
     companion object {
-        private const val ARG_URI = "ARG_URI"
+        private const val URI_ARG = "URI_ARG"
         fun newInstance(uri: Uri) = PhotoWebPageFragment().apply {
             arguments = bundleOf(
-                    ARG_URI to uri
+                    URI_ARG to uri
             )
         }
     }
@@ -32,7 +33,7 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        uri = arguments?.getParcelable(ARG_URI) ?: throw IllegalArgumentException()
+        uri = requireNotNull(arguments?.getParcelable(URI_ARG))
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -42,11 +43,13 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
             settings.javaScriptEnabled = true
             webChromeClient = object : WebChromeClient() {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                    with(binding.fragmentPhotoWebPagePb) {
-                        if (newProgress == 100) visibility = View.GONE
-                        else {
-                            visibility = View.VISIBLE
-                            progress = newProgress
+                    if (!blockAsyncCalls) {
+                        with(binding.fragmentPhotoWebPagePb) {
+                            if (newProgress == 100) visibility = View.GONE
+                            else {
+                                visibility = View.VISIBLE
+                                progress = newProgress
+                            }
                         }
                     }
                 }
@@ -54,7 +57,7 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
                 override fun onReceivedTitle(view: WebView?, title: String?) {
                     super.onReceivedTitle(view, title)
                     val activity = activity as AppCompatActivity
-                    activity.supportActionBar?.subtitle = title
+                    activity.supportActionBar?.subtitle = getString(R.string.web_view_subtitle)
                 }
             }
             webViewClient = WebViewClient()

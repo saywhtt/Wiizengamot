@@ -1,4 +1,4 @@
-![](docs/img/full_logo.png)
+![](docs/img/full_logo.png) 
 ___
 Android - application for viewing photos from [unsplash.com](https://unsplash.com)
 

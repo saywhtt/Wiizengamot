@@ -33,7 +33,7 @@ abstract class AbstractPhotoListFragment : VisibleFragment<FragmentPhotoListBind
         setHasOptionsMenu(true)
     }
 
-    override fun setup() = with(binding.fragmentPhotoListRecyclerView) {
+    override fun setup() = with(binding.fragmentPhotoListRv) {
         adapter = getPreparedAdapter()
         layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
@@ -49,6 +49,7 @@ abstract class AbstractPhotoListFragment : VisibleFragment<FragmentPhotoListBind
                         PHOTO_POSITION_ARG to position,
                         QUERY_ARG to basePhotosPresenter.query
                 ))
+                actionBar?.setDisplayHomeAsUpEnabled(false)
             }
         }
         return adapter

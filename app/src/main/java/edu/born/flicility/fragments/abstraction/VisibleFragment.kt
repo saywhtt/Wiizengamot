@@ -25,7 +25,7 @@ abstract class VisibleFragment<VB : ViewBinding> : ViewBindingFragment<VB>() {
 
     private val offNotificationReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-          //  resultCode = Activity.RESULT_CANCELED
+            resultCode = Activity.RESULT_CANCELED
         }
     }
 

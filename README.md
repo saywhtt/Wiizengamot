@@ -31,8 +31,8 @@ Android - application for viewing images from [unsplash.com](https://unsplash.co
     <td><b><i>Web View</i></b></td>
   </tr>
   <tr>
-    <td><img src="docs/img/all.jpg"></td>
-    <td><img src="docs/img/fin"></td>
+    <td><img src="docs/img/detail.jpg"></td>
+    <td><img src="docs/img/web_view.jpg"></td>
   </tr>
   <tr align="center">
      <td><b><i>Notification</i></b></td>

@@ -1,5 +1,7 @@
 package edu.born.flicility.activities
 
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.annotation.LayoutRes
@@ -26,6 +28,10 @@ class SingleFragmentActivity : AppCompatActivity() {
         const val PHOTO_POSITION_ARG = "PHOTO_POSITION_ARG"
         const val QUERY_ARG = "QUERY_ARG"
         const val URI_ARG = "URI_ARG"
+
+        fun newIntent(context: Context?): Intent {
+            return Intent(context, SingleFragmentActivity::class.java)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,15 +1,15 @@
 package edu.born.flicility.fragments
 
-/*import edu.born.flicility.service.isServiceStarted
-import edu.born.flicility.service.setServiceStart*/
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.born.flicility.R
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_ALL_REQUEST_KEY
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.START_SEARCH_REQUEST_KEY
@@ -18,6 +18,8 @@ import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
 import edu.born.flicility.presenters.BasePhotosPresenter
 import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.presenters.PhotoPresenter
+import edu.born.flicility.service.PollWorkerService.Companion.isServiceStarted
+import edu.born.flicility.service.PollWorkerService.Companion.setServiceStart
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 import javax.inject.Named
@@ -65,14 +67,15 @@ class PhotoListFragment : AbstractPhotoListFragment() {
         inflater.inflate(R.menu.fragment_photo_list, menu)
 
         context?.let {
-            /*val toggleItem = menu.findItem(R.id.menu_item_toggle_polling).actionView as SwitchMaterial
+            val toggleItem = menu.findItem(R.id.menu_item_toggle_polling).actionView as SwitchMaterial
             toggleItem.isChecked = isServiceStarted(it)
+
             toggleItem.setOnCheckedChangeListener { _, isOn ->
                 photoListPresenter.getPhotos()
                 setServiceStart(it, isOn)
                 val toastDescription = if (isOn) R.string.notifications_is_on else R.string.notifications_is_off
                 Toast.makeText(it, toastDescription, Toast.LENGTH_LONG).show()
-            }*/
+            }
         }
     }
 

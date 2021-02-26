@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">wiizengamot</string>
     <string name="search">Search</string>
-    <string name="clear">Clear search</string>
     <string name="polling">Polling</string>
-    <string name="new_photo_notification_title">New photos are available now</string>
-    <string name="new_photo_notification_text">Click to see</string>
+    <string name="new_photo_notification_title">I know you know about fresh photo</string>
+    <string name="new_photo_notification_text">They right here</string>
     <string name="toggle_polling">Poll</string>
     <string name="notifications_is_on">You have subscribed to notifications</string>
     <string name="notifications_is_off">You have unsubscribed from notifications</string>

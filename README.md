@@ -23,7 +23,7 @@ Android - application for viewing images from [unsplash.com](https://unsplash.co
   </tr>
   <tr>
     <td><img src="docs/img/all.jpg"></td>
-    <td><img src="docs/img/find.jpg"></td>
+    <td><img src="docs/img/fin"></td>
   </tr>
   <tr align="center">
     <td>Detail</td>

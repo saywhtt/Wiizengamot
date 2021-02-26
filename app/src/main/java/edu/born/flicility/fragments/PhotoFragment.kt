@@ -53,14 +53,16 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
                 .load(photo.urls.regular)
                 .into(fragmentPhotoIvMain, object : com.squareup.picasso.Callback {
                     override fun onSuccess() {
-                        endDownloading()
+                        if (!blockAsyncCalls) endDownloading()
                     }
 
                     override fun onError(e: Exception?) {
-                        endDownloading()
-                        Toast.makeText(getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
-                                .show()
-                        e?.printStackTrace()
+                        if (!blockAsyncCalls) {
+                            endDownloading()
+                            Toast.makeText(getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
+                                    .show()
+                            e?.printStackTrace()
+                        }
                     }
                 })
     }
@@ -68,11 +70,11 @@ class PhotoFragment : VisibleFragment<FragmentPhotoBinding>(), PhotoView {
     // NOTE: view implementation
 
     override fun startDownloading() {
-        if (!blockAsyncCalls) binding.fragmentPhotoPb.visibility = View.VISIBLE
+        binding.fragmentPhotoPb.visibility = View.VISIBLE
     }
 
     override fun endDownloading() {
-        if (!blockAsyncCalls) binding.fragmentPhotoPb.visibility = View.GONE
+        binding.fragmentPhotoPb.visibility = View.GONE
     }
 
     override fun getViewContext() = context

@@ -5,7 +5,7 @@
     android:layout_margin="4dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/fragment_photo_list_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/progress_view"
+            android:id="@+id/fragment_photo_list_pb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"

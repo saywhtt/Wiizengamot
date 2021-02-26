@@ -78,8 +78,8 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapt
 
     inner class PhotoHolder(view: View) : ViewHolder(view), View.OnClickListener {
 
-        val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.item_constraint_layout)
-        val imageView: ImageView = view.findViewById(R.id.item_image_view)
+        val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.photo_item_cl)
+        val imageView: ImageView = view.findViewById(R.id.photo_item_iv)
 
         private lateinit var photo: Photo
 

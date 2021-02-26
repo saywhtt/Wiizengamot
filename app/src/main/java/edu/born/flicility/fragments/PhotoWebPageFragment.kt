@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
@@ -33,7 +34,17 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         uri = requireNotNull(arguments?.getParcelable(URI_ARG))
+        actionBar?.apply {
+            setHomeAsUpIndicator(R.drawable.ic_close)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -63,5 +74,14 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
             webViewClient = WebViewClient()
             loadUrl(uri.toString())
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            actionBar?.setDisplayHomeAsUpEnabled(false)
+            activity?.finish()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

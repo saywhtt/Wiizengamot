@@ -1,7 +1,10 @@
 package edu.born.flicility.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -36,7 +39,10 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
         adapter = PhotoAdapter()
         basePhotosPresenter = photoSearchPresenter
         subscribeToPresenter()
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        actionBar?.apply {
+            setHomeAsUpIndicator(R.drawable.ic_back)
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     override fun setup() {

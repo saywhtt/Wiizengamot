@@ -3,7 +3,6 @@ package edu.born.flicility.network
 import edu.born.flicility.model.Photo
 import edu.born.flicility.network.API.AUTHORIZATION_HEADER
 import edu.born.flicility.network.API.PER_PAGE
-import io.reactivex.rxjava3.core.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET

@@ -32,7 +32,7 @@ Android - application for viewing photos from [unsplash.com](https://unsplash.co
   </tr>
   <tr>
     <td><img src="docs/img/detail.jpg"></td>
-    <td><img src="docs/img/web_view.jpg"></td>
+    <td><img src="docs/img/detail_web_view.jpg"></td>
   </tr>
   <tr align="center">
      <td>Notification</td>

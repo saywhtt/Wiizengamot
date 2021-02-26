@@ -1,4 +1,4 @@
-![](docs/img/full_logo.png) 
+![](app/src/main/res/mipmap-xxxhdpi/ic_launcher_wii.png) 
 ___
 Android - application for viewing photos from [unsplash.com](https://unsplash.com)
 

@@ -17,14 +17,14 @@ import javax.inject.Named
 class PhotoModule {
     @Provides
     @PhotoScope
-    @Named("photoListFragment")
+    @Named("forListFragment")
     fun providePhotoListPresenter(photoService: PhotoService): PhotoListPresenter<PhotoListView> {
         return PhotoListPresenterImpl(photoService)
     }
 
     @Provides
     @PhotoScope
-    @Named("photoPagerActivity")
+    @Named("forPagerFragment")
     fun providePhotoPagerPresenter(photoService: PhotoService): PhotoListPresenter<PhotoListView> {
         return PhotoListPresenterImpl(photoService)
     }

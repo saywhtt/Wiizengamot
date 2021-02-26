@@ -48,7 +48,7 @@ class PhotoPagerFragment : VisibleFragment<FragmentPhotoPagerBinding>(), PhotoLi
     }
 
     @Inject
-    @Named("photoPagerActivity")
+    @Named("forPagerFragment")
     lateinit var photoListPresenter: PhotoListPresenter<PhotoListView>
 
     @Inject

@@ -28,7 +28,7 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoAdapter.PhotoHolder>(), BaseAdapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoHolder =
-            PhotoHolder(view = LayoutInflater.from(parent.context).inflate(R.layout.photo_item, parent, false))
+            PhotoHolder(view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false))
 
     override fun getItemCount(): Int = data.size
 

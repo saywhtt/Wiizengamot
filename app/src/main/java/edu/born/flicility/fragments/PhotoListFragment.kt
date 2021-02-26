@@ -29,7 +29,7 @@ class PhotoListFragment : AbstractPhotoListFragment() {
     override lateinit var adapter: PhotoAdapter
 
     @Inject
-    @Named("photoListFragment")
+    @Named("forListFragment")
     lateinit var photoListPresenter: PhotoListPresenter<PhotoListView>
 
     @Inject

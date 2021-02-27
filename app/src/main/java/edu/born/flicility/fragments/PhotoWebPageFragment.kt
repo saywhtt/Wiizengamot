@@ -36,15 +36,12 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         uri = requireNotNull(arguments?.getParcelable(URI_ARG))
-        actionBar?.apply {
-            setHomeAsUpIndicator(R.drawable.ic_close)
-            setDisplayHomeAsUpEnabled(true)
-        }
+        showLeftActionBarButton(R.drawable.ic_close)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        showLeftActionBarButton()
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -79,7 +76,7 @@ class PhotoWebPageFragment : VisibleFragment<FragmentPhotoWebPageBinding>() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
             actionBar?.setDisplayHomeAsUpEnabled(false)
-            activity?.finish()
+            requireActivity().finish()
             true
         }
         else -> super.onOptionsItemSelected(item)

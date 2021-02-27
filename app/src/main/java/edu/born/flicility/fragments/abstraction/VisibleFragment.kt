@@ -48,6 +48,22 @@ abstract class VisibleFragment<VB : ViewBinding> : ViewBindingFragment<VB>() {
         activity?.unregisterReceiver(offNotificationReceiver)
     }
 
+    protected fun showLeftActionBarButton(drawable: Int) {
+        actionBar?.apply {
+            if (drawable != 0)
+                setHomeAsUpIndicator(drawable)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    protected fun showLeftActionBarButton() = showLeftActionBarButton(0)
+
+    protected fun hideLeftActionBarButton() {
+        actionBar?.apply {
+            setDisplayHomeAsUpEnabled(false)
+        }
+    }
+
     protected open fun hideKeyboard() {
         activity?.let {
             val imm = it.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
@@ -39,10 +40,7 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
         adapter = PhotoAdapter()
         basePhotosPresenter = photoSearchPresenter
         subscribeToPresenter()
-        actionBar?.apply {
-            setHomeAsUpIndicator(R.drawable.ic_back)
-            setDisplayHomeAsUpEnabled(true)
-        }
+        showLeftActionBarButton(R.drawable.ic_back)
     }
 
     override fun setup() {
@@ -56,7 +54,7 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
+        showLeftActionBarButton()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -89,7 +87,7 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         android.R.id.home -> {
             setFragmentResult(CLOSE_FRAGMENT_REQUEST_KEY, bundleOf())
-            actionBar?.setDisplayHomeAsUpEnabled(false)
+            hideLeftActionBarButton()
             hideKeyboard()
             true
         }
@@ -98,9 +96,13 @@ class PhotoSearchFragment : AbstractPhotoListFragment() {
 
     // NOTE: life cycle methods
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideLeftActionBarButton()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         unsubscribeFromPresenter()
-        photoPresenter.destroyDownloadQueue()
     }
 }

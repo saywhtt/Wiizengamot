@@ -3,6 +3,7 @@ package edu.born.flicility.network
 import edu.born.flicility.model.Photo
 import edu.born.flicility.network.API.AUTHORIZATION_HEADER
 import edu.born.flicility.network.API.PER_PAGE
+import io.reactivex.rxjava3.core.Observable
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
@@ -14,13 +15,13 @@ interface PhotoService {
     @GET("photos")
     fun getPhotos(@Query("page") page: Int,
                   @Query("per_page") per_page: Int = PER_PAGE,
-                  @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Call<List<Photo>>
+                  @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Observable<List<Photo>>
 
     @GET("search/photos")
     fun getPhotosByQuery(@Query("query") query: String,
                          @Query("page") page: Int,
                          @Query("per_page") per_page: Int = PER_PAGE,
-                         @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Call<PhotoSearchResponse>
+                         @Header("Authorization") auth: String = AUTHORIZATION_HEADER): Observable<PhotoSearchResponse>
 
     @GET
     fun getImage(@Url url: String): Call<ResponseBody>

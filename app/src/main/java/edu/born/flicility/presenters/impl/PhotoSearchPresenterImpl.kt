@@ -2,17 +2,13 @@ package edu.born.flicility.presenters.impl
 
 import android.widget.Toast
 import edu.born.flicility.R
-import edu.born.flicility.network.PhotoSearchResponse
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.presenters.PhotoSearchPresenter
 import edu.born.flicility.presenters.Query
 import edu.born.flicility.presenters.QueryType
 import edu.born.flicility.views.PhotoListView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-
-private val TAG = PhotoSearchPresenterImpl::class.java.simpleName
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 class PhotoSearchPresenterImpl(private val service: PhotoService) : PhotoSearchPresenter<PhotoListView> {
 
@@ -39,21 +35,20 @@ class PhotoSearchPresenterImpl(private val service: PhotoService) : PhotoSearchP
     private fun getByQuery(text: String) {
         view?.startDownloading()
         service.getPhotosByQuery(page = ++query.currentPage, query = text)
-                .enqueue(object : Callback<PhotoSearchResponse> {
-                    override fun onResponse(call: Call<PhotoSearchResponse>, response: Response<PhotoSearchResponse>) {
-                        response.body()?.let {
-                            if (it.results.isEmpty()) this@PhotoSearchPresenterImpl.query.isNoMoreResults = true
-                            else view?.update(it.results)
-                            view?.endDownloading()
-                        }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    if (it.results.isEmpty()) {
+                        query.isNoMoreResults = true
+                    } else {
+                        view?.update(it.results)
                     }
-
-                    override fun onFailure(call: Call<PhotoSearchResponse>, t: Throwable) {
-                        view?.endDownloading()
-                        Toast.makeText(view?.getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
-                                .show()
-                        t.printStackTrace()
-                    }
+                    view?.endDownloading()
+                }, {
+                    view?.endDownloading()
+                    Toast.makeText(view?.getViewContext(), R.string.connection_error, Toast.LENGTH_SHORT)
+                            .show()
+                    it.printStackTrace()
                 })
     }
 

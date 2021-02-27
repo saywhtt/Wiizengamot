@@ -6,12 +6,10 @@ import androidx.work.WorkInfo.State.ENQUEUED
 import androidx.work.WorkInfo.State.RUNNING
 import edu.born.flicility.app.App
 import edu.born.flicility.getLastResultId
-import edu.born.flicility.model.Photo
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.setLastResultId
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -51,22 +49,18 @@ class PollWorkerService(context: Context, workerParams: WorkerParameters) : Work
         return if (isNetworkAvailableAndConnected()) {
             val lastResultId = getLastResultId(this@with)
             photoService.getPhotos(page = 1, per_page = 1)
-                    .enqueue(object : Callback<List<Photo>> {
-                        override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
-                            response.body()?.let {
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (it.isNotEmpty()) {
+                            val resultId = it[0].id
+                            if (resultId != lastResultId) {
                                 showNotification(getPreparedNotification())
-                                if (it.isEmpty()) return
-                                else {
-                                    val resultId = it[0].id
-                                    if (resultId != lastResultId) {
-                                        showNotification(getPreparedNotification())
-                                        setLastResultId(this@with, resultId)
-                                    }
-                                }
+                                setLastResultId(this@with, resultId)
                             }
                         }
-
-                        override fun onFailure(call: Call<List<Photo>>, t: Throwable) = t.printStackTrace()
+                    }, {
+                        it.printStackTrace()
                     })
             Result.success()
         } else {

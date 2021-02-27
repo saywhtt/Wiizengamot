@@ -7,7 +7,7 @@ Android - application for viewing photos from [unsplash.com](https://unsplash.co
 1. Android SDK
 2. Kotlin
 3. Retrofit2
-4. JavaRx
+4. RxJava
 5. Fragment Result API
 6. WorkManager API & BroadcastReceivers (for notifications)
 7. Picasso

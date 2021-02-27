@@ -11,8 +11,6 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.born.flicility.R
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_ALL_REQUEST_KEY
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.START_SEARCH_REQUEST_KEY
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
 import edu.born.flicility.presenters.BasePhotosPresenter
@@ -20,6 +18,8 @@ import edu.born.flicility.presenters.PhotoListPresenter
 import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.service.PollWorkerService.Companion.isServiceStarted
 import edu.born.flicility.service.PollWorkerService.Companion.setServiceStart
+import edu.born.flicility.utils.END_PHOTO_PAGER_BY_ALL_REQUEST_KEY
+import edu.born.flicility.utils.START_SEARCH_REQUEST_KEY
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 import javax.inject.Named

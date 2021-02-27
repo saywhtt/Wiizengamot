@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentResultListener
 import edu.born.flicility.R
 import edu.born.flicility.fragments.PhotoListFragment
 import edu.born.flicility.fragments.PhotoPagerFragment
@@ -33,25 +34,27 @@ class SingleFragmentActivity : AppCompatActivity() {
     }
 
     private fun prepareListeners() {
-        setFragmentResultListener(START_SEARCH_REQUEST_KEY) { _, _ ->
-            replaceFragment<PhotoSearchFragment>(getLayoutResId())
-        }
-        setFragmentResultListener(START_PHOTO_PAGER_REQUEST_KEY) { _, result ->
+        setFragmentResultListener(START_SEARCH_REQUEST_KEY, FragmentResultListener { _, _ ->
+            replaceFragment<PhotoSearchFragment>(getMainContainerId())
+        })
+        setFragmentResultListener(START_PHOTO_PAGER_REQUEST_KEY, FragmentResultListener { _, result ->
             val (photos, position, query) = PhotoPagerFragment.splitArguments(result)
             val fragment = PhotoPagerFragment.newInstance(position, photos, query)
-            replaceFragment(fragment, getLayoutResId())
-        }
-        setFragmentResultListener(CLOSE_FRAGMENT_REQUEST_KEY) { _, _ ->
+            replaceFragment(fragment, getMainContainerId())
+        })
+        setFragmentResultListener(CLOSE_FRAGMENT_REQUEST_KEY, FragmentResultListener { _, _ ->
             supportFragmentManager.popBackStack()
-        }
+        })
     }
 
     private fun startMainFragment() =
             with(supportFragmentManager) {
                 findFragmentByTag(PhotoListFragment::class.java.name)
-                        ?: addFragment<PhotoListFragment>(getLayoutResId(), false)
+                        ?: addFragment<PhotoListFragment>(getMainContainerId(), false)
             }
 
     @LayoutRes
-    private fun getLayoutResId(): Int = R.layout.activity_fragment
+    private fun getLayoutResId() = R.layout.activity_fragment
+
+    private fun getMainContainerId() = R.id.fragment_container
 }

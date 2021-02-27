@@ -7,13 +7,13 @@ import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.fragment.app.setFragmentResult
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_ALL_REQUEST_KEY
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.CLOSE_FRAGMENT_REQUEST_KEY
 import edu.born.flicility.databinding.FragmentPhotoPagerBinding
 import edu.born.flicility.fragments.abstraction.VisibleFragment
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.*
+import edu.born.flicility.utils.CLOSE_FRAGMENT_REQUEST_KEY
+import edu.born.flicility.utils.END_PHOTO_PAGER_BY_ALL_REQUEST_KEY
+import edu.born.flicility.utils.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 import javax.inject.Named

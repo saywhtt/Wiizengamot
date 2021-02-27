@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.PHOTOS_ARG
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.PHOTO_POSITION_ARG
 import edu.born.flicility.activities.SingleFragmentActivity.Companion.QUERY_ARG
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.START_PHOTO_PAGER_REQUEST_KEY
 import edu.born.flicility.adapters.OnBottomReachedListener
 import edu.born.flicility.adapters.OnPhotoClickedListener
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.databinding.FragmentPhotoListBinding
 import edu.born.flicility.model.Photo
 import edu.born.flicility.presenters.BasePhotosPresenter
+import edu.born.flicility.utils.START_PHOTO_PAGER_REQUEST_KEY
 import edu.born.flicility.views.PhotoListView
 
 abstract class AbstractPhotoListFragment : VisibleFragment<FragmentPhotoListBinding>(), PhotoListView {

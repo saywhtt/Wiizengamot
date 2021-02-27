@@ -11,10 +11,12 @@ const val END_PHOTO_PAGER_BY_ALL_REQUEST_KEY = "END_PHOTO_PAGER_BY_ALL_REQUEST_K
 const val END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY = "END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY"
 
 fun AppCompatActivity.setFragmentResultListener(requestKey: String,
-                                                listener: ((requestKey: String, bundle: Bundle) -> Unit)) {
-    supportFragmentManager.setFragmentResultListener(requestKey,
+                                                listener: FragmentResultListener) {
+    supportFragmentManager.setFragmentResultListener(
+            requestKey,
             this,
-            listener as FragmentResultListener)
+            listener
+    )
 }
 
 inline fun <reified T : Fragment> AppCompatActivity.replaceFragment(resId: Int, addBackStack: Boolean = true) {

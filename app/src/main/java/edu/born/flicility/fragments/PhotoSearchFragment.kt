@@ -6,18 +6,17 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import edu.born.flicility.R
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.CLOSE_FRAGMENT_REQUEST_KEY
-import edu.born.flicility.activities.SingleFragmentActivity.Companion.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
 import edu.born.flicility.adapters.PhotoAdapter
 import edu.born.flicility.fragments.abstraction.AbstractPhotoListFragment
 import edu.born.flicility.presenters.BasePhotosPresenter
 import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.presenters.PhotoSearchPresenter
+import edu.born.flicility.utils.CLOSE_FRAGMENT_REQUEST_KEY
+import edu.born.flicility.utils.END_PHOTO_PAGER_BY_SEARCH_REQUEST_KEY
 import edu.born.flicility.views.PhotoListView
 import javax.inject.Inject
 

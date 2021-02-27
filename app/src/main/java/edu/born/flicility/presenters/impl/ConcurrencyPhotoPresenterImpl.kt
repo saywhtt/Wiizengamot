@@ -9,15 +9,17 @@ import edu.born.flicility.DownloadState
 import edu.born.flicility.DownloadState.QUEUE
 import edu.born.flicility.DownloadState.SINGLE
 import edu.born.flicility.network.PhotoService
-import edu.born.flicility.presenters.BasePresenter
 import edu.born.flicility.presenters.PhotoPresenter
+import edu.born.flicility.presenters.SubscribePresenter
 import edu.born.flicility.views.PhotoView
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.LinkedBlockingQueue
 
 private val TAG = ConcurrencyPhotoPresenterImpl::class.java.simpleName
 
-class ConcurrencyPhotoPresenterImpl(private val service: PhotoService) : BasePresenter<PhotoView>(), PhotoPresenter {
+class ConcurrencyPhotoPresenterImpl(private val service: PhotoService) : SubscribePresenter<PhotoView>, PhotoPresenter {
+
+    override var view: PhotoView? = null
 
     private val map = ConcurrentHashMap<ImageView, String>()
     private val queue = LinkedBlockingQueue<ImageView>()
@@ -70,5 +72,13 @@ class ConcurrencyPhotoPresenterImpl(private val service: PhotoService) : BasePre
 
     override fun destroyDownloadQueue() {
         customer.interrupt()
+    }
+
+    override fun subscribe(view: PhotoView) {
+        this.view = view
+    }
+
+    override fun unsubscribe() {
+        this.view = null
     }
 }

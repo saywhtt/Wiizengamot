@@ -5,9 +5,9 @@ import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
-import edu.born.flicility.DownloadState
-import edu.born.flicility.DownloadState.QUEUE
-import edu.born.flicility.DownloadState.SINGLE
+import edu.born.flicility.presenters.DownloadState
+import edu.born.flicility.presenters.DownloadState.QUEUE
+import edu.born.flicility.presenters.DownloadState.SINGLE
 import edu.born.flicility.network.PhotoService
 import edu.born.flicility.presenters.PhotoPresenter
 import edu.born.flicility.presenters.SubscribePresenter

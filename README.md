@@ -1,6 +1,10 @@
 ![](app/src/main/res/mipmap-xxxhdpi/ic_launcher_wii.png) 
 ___
-Android - application for viewing photos from [unsplash.com](https://unsplash.com)
+`Wizengamot` is Android - application for viewing photos from the service [unsplash.com](https://unsplash.com) 
+In this application, you can view the latest photos from the service. Search the required photos by 
+text. View photos in detail inside the application or in the web view. Using the toggle switch on 
+the main page, you can enable or disable notifications about new photos appearing on the service. 
+In the enabled mode, notifications pass every 15 minutes or less often (if there are no new photos yet).
 
 #### *Using stack:* 
 
